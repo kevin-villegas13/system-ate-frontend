@@ -1,126 +1,111 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { UserPlus } from "lucide-react";
+import FilterSelect from "@/components/shared/filters-select";
+import PageHeader from "@/components/shared/page-header";
+import SearchInput from "@/components/shared/shared-input";
+import { ChangeEvent, useState } from "react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  ActionType,
+  Column,
+  CustomTable,
+} from "@/components/shared/custom-tablet";
+import { CustomPagination } from "@/components/shared/custom-pagination";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
-import { UserPlus, Filter, Search } from "lucide-react";
+interface Affiliate {
+  id: number;
+  name: string;
+  gender: string;
+  sector: string;
+}
 
 export default function AffiliatePage() {
+  const affiliates: Affiliate[] = [
+    { id: 1, name: "Kevin", gender: "Masculino", sector: "Tecnología" },
+    { id: 2, name: "Ana", gender: "Femenino", sector: "Salud" },
+    { id: 3, name: "Carlos", gender: "Masculino", sector: "Educación" },
+    { id: 4, name: "Laura", gender: "Femenino", sector: "Finanzas" },
+    { id: 5, name: "Miguel", gender: "Masculino", sector: "Construcción" },
+    { id: 6, name: "Sofía", gender: "Femenino", sector: "Marketing" },
+    { id: 7, name: "Andrés", gender: "Masculino", sector: "Logística" },
+    { id: 8, name: "Valentina", gender: "Femenino", sector: "Legal" },
+    { id: 9, name: "Javier", gender: "Masculino", sector: "Turismo" },
+    { id: 10, name: "Camila", gender: "Femenino", sector: "Arte" },
+  ];
+
+  const columns: Column<Affiliate>[] = [
+    { key: "id", label: "ID" },
+    { key: "name", label: "Nombre" },
+    { key: "gender", label: "Género" },
+    { key: "sector", label: "Sector" },
+  ];
+
+  // Estado para la paginación
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 2;
+  const totalPages = Math.ceil(affiliates.length / itemsPerPage);
+
+  // Datos paginados
+  const paginatedAffiliates = affiliates.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleAction = (action: ActionType, item: Affiliate) => {
+    console.log(`Acción: ${action}`, item);
+  };
+
   return (
     <div className="flex flex-col gap-8 p-8">
       {/* Encabezado */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <h1 className="text-4xl font-extrabold text-gray-900">Afiliados</h1>
-        <Button className="flex items-center gap-2 px-5 py-3 text-white transition-colors rounded-lg bg-emerald-600 hover:bg-emerald-700">
-          <UserPlus className="w-6 h-6" />
-          Nuevo Afiliado
-        </Button>
-      </div>
-
+      <PageHeader
+        title="Afiliados"
+        buttonText="Nuevo Afiliado"
+        buttonIcon={UserPlus}
+        onButtonClick={() => console.log("Crear nuevo afiliado")}
+      />
       {/* Filtros y Buscador */}
       <div className="flex flex-wrap items-center gap-4 p-6 rounded-xl bg-white shadow-sm">
-        <div className="relative flex-1 min-w-[200px]">
-          <Input placeholder="Buscar por nombre..." className="pr-10" />
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-        </div>
+        <SearchInput
+          placeholder={"Buscar Afiliados..."}
+          onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
 
-        <Select>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Seleccionar género" />
-            <Filter />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="male">Masculino</SelectItem>
-            <SelectItem value="female">Femenino</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Seleccionar sector" />
-            <Filter />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="tech">Tecnología</SelectItem>
-            <SelectItem value="health">Salud</SelectItem>
-            <SelectItem value="education">Educación</SelectItem>
-          </SelectContent>
-        </Select>
+        <FilterSelect
+          placeholder="Seleccionar género"
+          value={""}
+          onChange={() => console.log("Crear nuevo afiliado")}
+          options={[
+            { value: "all", label: "Todos" },
+            { value: "male", label: "Masculino" },
+            { value: "female", label: "Femenino" },
+          ]}
+        />
+        <FilterSelect
+          placeholder="Seleccionar género"
+          value={""}
+          onChange={() => console.log("Crear nuevo afiliado")}
+          options={[
+            { value: "all", label: "Todos" },
+            { value: "male", label: "Masculino" },
+            { value: "female", label: "Femenino" },
+          ]}
+        />
       </div>
-
       {/* Tabla de Afiliados */}
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-4 text-gray-600">ID</th>
-              <th className="p-4 text-gray-600">Nombre</th>
-              <th className="p-4 text-gray-600">Género</th>
-              <th className="p-4 text-gray-600">Sector</th>
-              <th className="p-4 text-gray-600">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[1, 2, 3].map((id) => (
-              <tr key={id} className="hover:bg-gray-50">
-                <td className="p-4">{id}</td>
-                <td className="p-4">Afiliado {id}</td>
-                <td className="p-4">Masculino</td>
-                <td className="p-4">Tecnología</td>
-                <td className="p-4">
-                  <Button size="sm" variant="outline">
-                    Editar
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <CustomTable
+        data={paginatedAffiliates}
+        columns={columns}
+        actions={["view", "edit", "delete"]}
+        onAction={handleAction}
+      />
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }
