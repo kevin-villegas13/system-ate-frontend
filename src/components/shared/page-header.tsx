@@ -1,12 +1,5 @@
-import { LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
-
-interface PageProps {
-  title: string;
-  buttonText: string;
-  buttonIcon: LucideIcon; // Aquí está bien tipado
-  onButtonClick: () => void;
-}
+import { PageProps } from "./types/custom-pageHearder.type";
 
 export default function PageHeader({
   title,

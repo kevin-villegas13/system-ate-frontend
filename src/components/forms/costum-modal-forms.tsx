@@ -8,7 +8,7 @@ import {
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { FormField } from "./form-field";
-import { GenericModalFormsProps } from "./types/forms-generic";
+import { GenericModalFormsProps } from "./types/forms-generic.type";
 
 export default function GenericModalForms<T extends Record<string, unknown>>({
   isOpen,
@@ -22,20 +22,24 @@ export default function GenericModalForms<T extends Record<string, unknown>>({
   submitText = "Submit",
 }: GenericModalFormsProps<T>) {
   return (
+    // Modal con Formulario
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-w-4xl">
+        {/* Encabezado del modal */}
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
+        {/* Formulario con Formik */}
         <Formik<T>
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting, setFieldValue }) => (
-            <Form className="space-y-4">
+            <Form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Mapeo de campos dinámicamente */}
               {fields.map((field) => (
                 <FormField<T>
                   key={String(field.name)}
@@ -46,9 +50,16 @@ export default function GenericModalForms<T extends Record<string, unknown>>({
                 />
               ))}
 
-              <Button type="submit" disabled={isSubmitting} className="w-full">
-                {submitText}
-              </Button>
+              {/* Botón de envío */}
+              <div className="col-span-full">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {submitText}
+                </Button>
+              </div>
             </Form>
           )}
         </Formik>

@@ -5,7 +5,6 @@ interface Gender {
   id: string;
   genderName: string;
 }
-console.log(ENDPOINTS);
 
 export const useGetGenders = () =>
   useGet<Gender[]>("genders", ENDPOINTS.genders.list);

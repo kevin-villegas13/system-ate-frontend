@@ -5,33 +5,27 @@ import FilterSelect from "@/components/shared/filters-select";
 import PageHeader from "@/components/shared/page-header";
 import SearchInput from "@/components/shared/shared-input";
 import { ChangeEvent, useState } from "react";
+import { CustomTable } from "@/components/shared/custom-tablet";
+import { CustomPagination } from "@/components/shared/custom-pagination";
+import GenericModalForms from "@/components/forms/costum-modal-forms";
+import { useGetGenders } from "@/services/gender/useGenders";
+import { useGetSectors } from "@/services/sector/useSectors";
+import { Affiliate } from "@/lib/interface/affiliate.interfaces";
 import {
   ActionType,
   Column,
-  CustomTable,
-} from "@/components/shared/custom-tablet";
-import { CustomPagination } from "@/components/shared/custom-pagination";
-import GenericModalForms from "@/components/forms/costum-modal-forms";
-import { FieldConfig } from "@/components/forms/types/forms-generic";
-import { useGetGenders } from "@/hooks/useGenders";
-import { data } from "@/config/dashboard-sidebar";
-
-interface Affiliate {
-  id: number;
-  name: string;
-  gender: string;
-  sector: string;
-}
-interface AffiliateFormValues extends Record<string, unknown> {
-  name: string;
-  gender: string;
-  sector: string;
-  birthdate: string;
-}
+} from "@/components/shared/types/custom-tablet.type";
+import { useCreateAffiliate } from "@/services/affiliate/useAffiliates";
+import { validationSchema } from "@/lib/validations/validation.schema.affiliate";
+import { AffiliateFormValues } from "@/components/forms/types/affiliateFormValues.type";
+import { fields, initialValues } from "@/components/config/affiliateFields";
 
 export default function AffiliatePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: genders, isLoading: loadingGenders } = useGetGenders();
+  const { data: sectors, isLoading: loadingSectors } = useGetSectors();
+  const { mutateAsync: createAffiliate } = useCreateAffiliate();
+
   console.log(genders);
 
   const affiliates: Affiliate[] = [
@@ -45,38 +39,6 @@ export default function AffiliatePage() {
     { id: 8, name: "Valentina", gender: "Femenino", sector: "Legal" },
     { id: 9, name: "Javier", gender: "Masculino", sector: "Turismo" },
     { id: 10, name: "Camila", gender: "Femenino", sector: "Arte" },
-  ];
-
-  const initialValues: AffiliateFormValues = {
-    name: "",
-    gender: "",
-    sector: "",
-    birthdate: "",
-  };
-
-  const fields: FieldConfig<AffiliateFormValues>[] = [
-    {
-      name: "name",
-      label: "Nombre",
-      type: "text",
-      placeholder: "Ingrese el nombre",
-    },
-    {
-      name: "gender",
-      label: "Género",
-      type: "select",
-      options: [
-        { value: "Masculino", label: "Masculino" },
-        { value: "Femenino", label: "Femenino" },
-      ],
-    },
-    {
-      name: "sector",
-      label: "Sector",
-      type: "text",
-      placeholder: "Ingrese el sector",
-    },
-    { name: "birthdate", label: "Fecha de Nacimiento", type: "date" },
   ];
 
   const columns: Column<Affiliate>[] = [
@@ -100,9 +62,23 @@ export default function AffiliatePage() {
   const handleAction = (action: ActionType, item: Affiliate) => {
     console.log(`Acción: ${action}`, item);
   };
-  const handleSubmit = (values: AffiliateFormValues) => {
-    console.log("Nuevo Afiliado:", values);
-    setIsModalOpen(false);
+
+  const handleSubmit = async (values: AffiliateFormValues) => {
+    try {
+      const affiliateData: AffiliateFormValues = {
+        ...values,
+        genderId: Number(values.genderId),
+        sectorId: Number(values.sectorId),
+      };
+
+      console.log("Nuevo Afiliado:", affiliateData);
+      await createAffiliate(affiliateData);
+      setIsModalOpen(false);
+      console.log("Afiliado creado correctamente");
+    } catch (error: any) {
+      console.error("Error al crear afiliado", error);
+      alert("Error al crear afiliado: " + error.message);
+    }
   };
 
   return (
@@ -120,6 +96,7 @@ export default function AffiliatePage() {
         onClose={() => setIsModalOpen(false)}
         title="Crear Nuevo Afiliado"
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
         fields={fields}
         submitText="Crear Afiliado"
@@ -142,22 +119,27 @@ export default function AffiliatePage() {
             loadingGenders
               ? []
               : genders?.map((gender) => ({
-                  value: gender.genderName,
+                  value: gender.id,
                   label: gender.genderName,
                 })) ?? []
           }
         />
+
         <FilterSelect
           placeholder="Seleccionar sectores"
           value={""}
           onChange={() => console.log("Crear nuevo afiliado")}
-          options={[
-            { value: "all", label: "Todos" },
-            { value: "male", label: "Masculino" },
-            { value: "female", label: "Femenino" },
-          ]}
+          options={
+            loadingSectors
+              ? []
+              : sectors?.map((sector: { id: string; name: string }) => ({
+                  value: sector.id,
+                  label: sector.name,
+                })) || []
+          }
         />
       </div>
+      
       {/* Tabla de Afiliados */}
       <CustomTable
         data={paginatedAffiliates}
@@ -165,6 +147,7 @@ export default function AffiliatePage() {
         actions={["view", "edit", "delete"]}
         onAction={handleAction}
       />
+
       <CustomPagination
         currentPage={currentPage}
         totalPages={totalPages}

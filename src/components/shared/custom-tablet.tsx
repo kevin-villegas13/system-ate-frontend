@@ -1,19 +1,5 @@
 import { Pencil, Trash2, Eye } from "lucide-react";
-
-export interface Column<T> {
-  key: keyof T;
-  label: string;
-  render?: (item: T) => React.ReactNode;
-}
-
-export type ActionType = "view" | "edit" | "delete";
-
-interface CustomTableProps<T> {
-  data: T[];
-  columns: Column<T>[];
-  actions?: ActionType[];
-  onAction: (action: ActionType, item: T) => void;
-}
+import { CustomTableProps } from "./types/custom-tablet.type";
 
 export function CustomTable<T extends { id: number }>({
   data,

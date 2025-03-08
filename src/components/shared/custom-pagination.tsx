@@ -6,12 +6,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-interface CustomPaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+import { CustomPaginationProps } from "./types/custom-pagination.type";
 
 export function CustomPagination({
   currentPage,

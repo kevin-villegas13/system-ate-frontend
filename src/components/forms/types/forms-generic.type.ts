@@ -1,7 +1,13 @@
 import { FormikHelpers } from "formik";
 
 // Definimos los tipos permitidos para los campos del formulario
-export type FieldType = "text" | "textarea" | "select" | "date" | "number";
+export type FieldType =
+  | "text"
+  | "textarea"
+  | "select"
+  | "date"
+  | "number"
+  | "checkbox";
 
 // Opciones estrictamente tipadas para los campos tipo "select"
 export interface SelectOption<T = string | number> {
@@ -10,12 +16,13 @@ export interface SelectOption<T = string | number> {
 }
 
 // Configuración estricta de cada campo
-export interface FieldConfig<T = string | number> {
+export interface FieldConfig<T = string | number | boolean> {
   name: keyof T;
   label: string;
   type: FieldType;
   options?: SelectOption[];
   placeholder?: string;
+  value?: T;
 }
 
 // Props del componente principal

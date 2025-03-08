@@ -6,18 +6,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
+import { FilterSelectProps } from "./types/custom-select.type";
 
-interface Option {
-  value: string;
-  label: string;
-}
 
-interface FilterSelectProps {
-  placeholder: string;
-  options: Option[];
-  value: string;
-  onChange: (value: string) => void;
-}
 
 export default function FilterSelect({
   placeholder,

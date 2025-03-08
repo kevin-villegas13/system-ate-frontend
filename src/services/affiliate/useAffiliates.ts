@@ -1,7 +1,8 @@
 import { ENDPOINTS } from "@/lib/api/endpoints";
-import { PaginationParams, usePagination } from "../use-pagination";
-import { usePost } from "../use-post";
-import { useGet } from "../use-get";
+import { usePagination } from "../../hooks/use-pagination";
+import { usePost } from "../../hooks/use-post";
+import { useGet } from "../../hooks/use-get";
+import { PaginationParams } from "@/lib/interface/pagination-paramas.interfaces";
 
 // Obtener afiliados con paginación
 export const useGetAffiliates = (params: PaginationParams) =>

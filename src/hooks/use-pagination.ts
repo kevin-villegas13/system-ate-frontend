@@ -1,12 +1,6 @@
 import { apiClient } from "@/lib/api/api-client";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-
-export interface PaginationParams {
-  page: number;
-  limit: number;
-  search?: string;
-  order?: "ASC" | "DESC";
-}
+import { PaginationParams } from "../lib/interface/pagination-paramas.interfaces";
 
 export const usePagination = <T>(
   key: string,

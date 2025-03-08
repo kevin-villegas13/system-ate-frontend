@@ -1,11 +1,6 @@
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
-import { ChangeEvent } from "react";
-
-interface SearchInputProps {
-  placeholder: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+import { SearchInputProps } from "./types/custom-searchInput.type";
 
 export default function SearchInput({
   placeholder,
