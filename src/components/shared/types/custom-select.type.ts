@@ -4,8 +4,8 @@ export interface Option {
 }
 
 export interface FilterSelectProps {
-  placeholder: string;
-  options: Option[];
-  value: string;
-  onChange: (value: string) => void;
+  placeholder?: string;
+  options: { value: string; label: string }[];
+  value?: string;
+  onChange: (value: string | undefined) => void;
 }

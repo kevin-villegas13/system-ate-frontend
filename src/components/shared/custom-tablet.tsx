@@ -37,43 +37,53 @@ export function CustomTable<T extends { id: number }>({
 
         {/* Cuerpo */}
         <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={item.id}
-              className={`transition-colors duration-300 p-4 text-center ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-              } hover:bg-gray-100`}
-            >
-              {columns.map((column) => (
-                <td key={String(column.key)} className="p-4 text-gray-800">
-                  {column.render
-                    ? column.render(item)
-                    : String(item[column.key])}
-                </td>
-              ))}
+          {data.map((item, index) => {
+            // Validar item.id, si es NaN o undefined, usamos el index como fallback
+            const uniqueKey =
+              Number.isNaN(item.id) || item.id === undefined ? index : item.id;
 
-              {/* Acciones */}
-              {actions.length > 0 && (
-                <td className="p-4 text-center">
-                  <div className="flex justify-center items-center gap-4">
-                    {actions.map((action) => {
-                      const { icon: Icon, label, color } = actionIcons[action];
-                      return (
-                        <button
-                          key={action}
-                          onClick={() => onAction(action, item)}
-                          className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-transform duration-300 hover:scale-105 ${color} hover:brightness-125`}
-                        >
-                          <Icon size={18} />
-                          <span>{label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </td>
-              )}
-            </tr>
-          ))}
+            return (
+              <tr
+                key={uniqueKey}
+                className={`transition-colors duration-300 p-4 text-center ${
+                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                } hover:bg-gray-100`}
+              >
+                {columns.map((column) => (
+                  <td key={String(column.key)} className="p-4 text-gray-800">
+                    {column.render
+                      ? column.render(item)
+                      : String(item[column.key])}
+                  </td>
+                ))}
+
+                {/* Acciones */}
+                {actions.length > 0 && (
+                  <td className="p-4 text-center">
+                    <div className="flex justify-center items-center gap-4">
+                      {actions.map((action) => {
+                        const {
+                          icon: Icon,
+                          label,
+                          color,
+                        } = actionIcons[action];
+                        return (
+                          <button
+                            key={action}
+                            onClick={() => onAction(action, item)}
+                            className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-transform duration-300 hover:scale-105 ${color} hover:brightness-125`}
+                          >
+                            <Icon size={18} />
+                            <span>{label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -1,4 +1,6 @@
 export interface Sector {
-  id: string;
+  id: number;
   name: string;
+  sectorName: string;
+  sectorCode: string;
 }

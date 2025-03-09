@@ -9,9 +9,22 @@ export const apiClient = async (
     headers: { "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
   };
-  console.log(options);
 
   const response = await fetch(`${API_URL}${endpoint}`, options);
-  if (!response.ok) throw new Error("Error en la petición");
-  return response.json();
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = { error: "Error desconocido" };
+  }
+
+  if (!response.ok) {
+    throw {
+      status: response.status,
+      data,
+    };
+  }
+
+  return data;
 };
