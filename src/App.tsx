@@ -1,11 +1,5 @@
-import { Button } from "./components/ui/button";
+import AppRoutes from "./router/routes";
 
 export default function App() {
-  return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-svh">
-        <Button>Click me</Button>
-      </div>
-    </>
-  );
+  return <AppRoutes />;
 }

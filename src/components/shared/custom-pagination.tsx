@@ -5,7 +5,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "../../components/ui/pagination";
 
 interface CustomPaginationProps {
   currentPage: number;
@@ -23,6 +23,7 @@ export function CustomPagination({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
+            size="default"
             onClick={() =>
               currentPage > 1 ? onPageChange(currentPage - 1) : undefined
             }
@@ -33,6 +34,7 @@ export function CustomPagination({
         {[...Array(totalPages).keys()].map((page) => (
           <PaginationItem key={page}>
             <PaginationLink
+              size="default"
               onClick={() => onPageChange(page + 1)}
               isActive={page + 1 === currentPage}
             >
@@ -43,6 +45,7 @@ export function CustomPagination({
 
         <PaginationItem>
           <PaginationNext
+            size="default"
             onClick={() =>
               currentPage < totalPages
                 ? onPageChange(currentPage + 1)

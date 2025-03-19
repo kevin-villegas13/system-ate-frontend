@@ -1,14 +1,15 @@
 import { ChangeEvent, useState } from "react";
-import PageHeader from "../../components/shared/page-header";
+import PageHeader from "../../../components/shared/page-header";
 import { UserPlus } from "lucide-react";
-import SearchInput from "../../components/shared/shared-input";
-import FilterSelect from "../../components/shared/filters-select";
+import SearchInput from "../../../components/shared/shared-input";
+import FilterSelect from "../../../components/shared/filters-select";
 import {
   ActionType,
   Column,
   CustomTable,
-} from "../../components/shared/custom-tablet";
-import { CustomPagination } from "../../components/shared/custom-pagination";
+} from "../../../components/shared/custom-tablet";
+import { CustomPagination } from "../../../components/shared/custom-pagination";
+import CreateUsers from "./create/page";
 
 interface User {
   id: number;
@@ -103,6 +104,8 @@ export default function PageUser() {
         totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
+
+      <CreateUsers isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }

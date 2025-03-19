@@ -1,6 +1,4 @@
-"use client";
-
-import PageHeader from "@/components/shared/page-header";
+import PageHeader from "../../components/shared/page-header";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
 
