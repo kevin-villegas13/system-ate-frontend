@@ -14,18 +14,23 @@ import {
 import DelegateDialog from "../../../../components/shared/custom-dialog";
 import ConfirmDialog from "../../../../components/shared/confirm-alert";
 
-interface CrearUsuarioProps {
+interface EditarUsuarioProps {
   isOpen: boolean;
   onClose: () => void;
+  userData: { name: string; role: string } | null;
 }
 
-export default function CrearUsuario({ isOpen, onClose }: CrearUsuarioProps) {
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+export default function EditarUsuario({
+  isOpen,
+  onClose,
+  userData,
+}: EditarUsuarioProps) {
+  const [name, setName] = useState(userData?.name);
+  const [role, setRole] = useState(userData?.role);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleOpenConfirm = () => {
-    if (!name.trim()) {
+    if (!name?.trim()) {
       toast.error("Debe ingresar un nombre de usuario.");
       return;
     }
@@ -37,8 +42,8 @@ export default function CrearUsuario({ isOpen, onClose }: CrearUsuarioProps) {
   };
 
   const handleConfirm = () => {
-    console.log("Usuario creado:", { name, role });
-    toast.success(`Usuario ${name} creado exitosamente.`);
+    console.log("Usuario editado:", { name, role });
+    toast.success(`Usuario ${name} actualizado exitosamente.`);
     setIsConfirmOpen(false);
     onClose();
   };
@@ -48,16 +53,16 @@ export default function CrearUsuario({ isOpen, onClose }: CrearUsuarioProps) {
       <DelegateDialog
         isOpen={isOpen}
         onClose={onClose}
-        title="Crear Usuario"
-        description="Ingrese el nombre de usuario y seleccione un rol."
+        title="Editar Usuario"
+        description="Modifique el nombre de usuario y seleccione un rol."
         footerButtons={
           <Button type="button" onClick={handleOpenConfirm}>
             <Award className="mr-2 h-4 w-4" />
-            Crear Usuario
+            Guardar Cambios
           </Button>
         }
       >
-        <form id="crearUsuarioForm" className="grid gap-6">
+        <form id="editarUsuarioForm" className="grid gap-6">
           {/* Nombre de usuario */}
           <div className="grid gap-2">
             <Label htmlFor="nombre">Nombre de usuario</Label>
@@ -93,8 +98,8 @@ export default function CrearUsuario({ isOpen, onClose }: CrearUsuarioProps) {
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirm}
-        title="Confirmar Creación"
-        description={`¿Está seguro de que desea crear el usuario ${name} con rol ${role}?`}
+        title="Confirmar Edición"
+        description={`¿Está seguro de que desea actualizar el usuario ${name} con rol ${role}?`}
       />
     </>
   );

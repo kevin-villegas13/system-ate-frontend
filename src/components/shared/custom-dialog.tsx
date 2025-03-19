@@ -5,8 +5,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "../../components/ui/dialog";
-import { Button } from "../../components/ui/button";
+} from "../ui/dialog";
+import { Button } from "../ui/button";
 import { ReactNode } from "react";
 
 interface DelegateDialogProps {
@@ -36,7 +36,7 @@ export default function DelegateDialog({
         <div className="py-4">{children}</div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            Cancelar
           </Button>
           {footerButtons}
         </DialogFooter>

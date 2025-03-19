@@ -10,6 +10,7 @@ import {
 } from "../../../components/shared/custom-tablet";
 import { CustomPagination } from "../../../components/shared/custom-pagination";
 import CreateUsers from "./create/page";
+import EditUser from "./update/page";
 
 interface User {
   id: number;
@@ -19,7 +20,9 @@ interface User {
 }
 
 export default function PageUser() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const affiliates: User[] = [
     { id: 1, name: "Kevin", role: "Masculino", active: "Tecnología" },
@@ -52,7 +55,10 @@ export default function PageUser() {
   );
 
   const handleAction = (action: ActionType, item: User) => {
-    console.log(`Acción: ${action}`, item);
+    if (action === "edit") {
+      setSelectedUser(item);
+      setIsEditModalOpen(true);
+    }
   };
 
   return (
@@ -61,14 +67,14 @@ export default function PageUser() {
         title="Usuario"
         buttonText="Nuevo Usuario"
         buttonIcon={UserPlus}
-        onButtonClick={() => setIsModalOpen(true)}
+        onButtonClick={() => setIsCreateModalOpen(true)}
       />
 
       <div className="flex flex-wrap items-center gap-4 p-6 rounded-xl bg-white shadow-sm">
         <SearchInput
           placeholder={"Buscar Afiliados..."}
-          onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-            throw new Error("Function not implemented.");
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            console.log("Searching for:", e.target.value);
           }}
         />
         <FilterSelect
@@ -95,7 +101,7 @@ export default function PageUser() {
       <CustomTable
         data={paginatedAffiliates}
         columns={columns}
-        actions={["view", "edit", "delete", "desactive"]}
+        actions={["edit", "delete", "desactive"]}
         onAction={handleAction}
       />
 
@@ -105,7 +111,15 @@ export default function PageUser() {
         onPageChange={setCurrentPage}
       />
 
-      <CreateUsers isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <CreateUsers
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
+      <EditUser
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        userData={selectedUser}
+      />
     </div>
   );
 }
