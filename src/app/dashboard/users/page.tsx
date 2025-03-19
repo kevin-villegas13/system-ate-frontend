@@ -11,6 +11,8 @@ import {
 import { CustomPagination } from "../../../components/shared/custom-pagination";
 import CreateUsers from "./create/page";
 import EditUser from "./update/page";
+import { toast } from "sonner";
+import ConfirmDialog from "../../../components/shared/confirm-alert";
 
 interface User {
   id: number;
@@ -23,6 +25,9 @@ export default function PageUser() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<null | (() => void)>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const affiliates: User[] = [
     { id: 1, name: "Kevin", role: "Masculino", active: "Tecnología" },
@@ -58,7 +63,28 @@ export default function PageUser() {
     if (action === "edit") {
       setSelectedUser(item);
       setIsEditModalOpen(true);
+    } else if (action === "delete") {
+      setConfirmMessage(`¿Estás seguro de eliminar a ${item.name}?`);
+      setConfirmAction(() => () => {
+        // Aquí iría la lógica para eliminar el usuario
+        toast.success(`Usuario ${item.name} eliminado con éxito`);
+      });
+      setIsConfirmOpen(true);
+    } else if (action === "desactive") {
+      setConfirmMessage(`¿Quieres desactivar a ${item.name}?`);
+      setConfirmAction(() => () => {
+        // Aquí iría la lógica para desactivar el usuario
+        toast.success(`Usuario ${item.name} desactivado`);
+      });
+      setIsConfirmOpen(true);
     }
+  };
+
+  const handleConfirm = () => {
+    if (confirmAction) {
+      confirmAction(); // Ejecuta la acción almacenada (eliminar o desactivar)
+    }
+    setIsConfirmOpen(false); // Cierra el modal
   };
 
   return (
@@ -119,6 +145,13 @@ export default function PageUser() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         userData={selectedUser}
+      />
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleConfirm}
+        title="Confirmación Requerida"
+        description={confirmMessage}
       />
     </div>
   );

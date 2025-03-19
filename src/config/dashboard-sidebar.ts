@@ -1,7 +1,5 @@
 import {
-  Archive,
   Baby,
-  Building,
   ClipboardCheck,
   ClipboardList,
   FileText,
@@ -40,12 +38,6 @@ export const data = {
           url: "/dashboard/users",
           icon: Users,
           roles: ["Administrador", "Empleado"],
-        },
-        {
-          title: "Roles de Usuarios",
-          url: "/dashboard/users/roles",
-          icon: ShieldCheck,
-          roles: ["Administrador"],
         },
       ],
     },
