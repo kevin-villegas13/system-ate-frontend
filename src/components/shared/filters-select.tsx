@@ -6,7 +6,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
-import { FilterSelectProps } from "./types/custom-select.type";
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface FilterSelectProps {
+  placeholder: string;
+  options: Option[];
+  value: string;
+  onChange: (value: string) => void;
+}
 
 export default function FilterSelect({
   placeholder,
@@ -14,20 +25,13 @@ export default function FilterSelect({
   value,
   onChange,
 }: FilterSelectProps) {
-  const handleChange = (val: string) => {
-    onChange(val === "all" ? undefined : val);
-  };
-
   return (
-    <Select value={value ?? "all"} onValueChange={handleChange}>
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-[200px]">
         <SelectValue placeholder={placeholder} />
         <Filter />
       </SelectTrigger>
       <SelectContent>
-        {/* Opción para limpiar el filtro */}
-        <SelectItem value="all">{placeholder || "Todos"}</SelectItem>
-
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
