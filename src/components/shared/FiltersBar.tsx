@@ -1,6 +1,10 @@
 import { Children, ReactNode } from "react";
 
-export default function FiltersBar({ children }: { children: ReactNode[] }) {
+export default function FiltersBar({
+  children,
+}: {
+  children: ReactNode | ReactNode[];
+}) {
   const items = Children.toArray(children);
 
   return (

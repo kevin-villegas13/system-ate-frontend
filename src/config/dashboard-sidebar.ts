@@ -100,7 +100,7 @@ export const data = {
       items: [
         {
           title: "Consultar Sectores",
-          url: "/dashboard/sector",
+          url: "/dashboard/sectores",
           icon: Search,
           roles: ["Administrador", "Empleado"],
         },
@@ -140,7 +140,7 @@ export const data = {
       items: [
         {
           title: "Consultar Eventos",
-          url: "/dashboard/event",
+          url: "/dashboard/eventos",
           icon: MapPin,
           roles: ["Administrador", "Empleado"],
         },
