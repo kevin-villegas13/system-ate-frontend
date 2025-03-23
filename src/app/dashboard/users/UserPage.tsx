@@ -1,18 +1,21 @@
 import { ChangeEvent, useState } from "react";
-import PageHeader from "../../../components/shared/page-header";
+import PageHeader from "../../../components/shared/PageHeader";
 import { UserPlus } from "lucide-react";
-import SearchInput from "../../../components/shared/shared-input";
-import FilterSelect from "../../../components/shared/filters-select";
+import SearchInput from "../../../components/shared/SearchInput";
+import FilterSelect from "../../../components/shared/FilterSelect";
 import {
   ActionType,
   Column,
   CustomTable,
-} from "../../../components/shared/custom-tablet";
-import { CustomPagination } from "../../../components/shared/custom-pagination";
-import CreateUsers from "./create/page";
-import EditUser from "./update/page";
+} from "../../../components/shared/CustomTable";
+import { CustomPagination } from "../../../components/shared/CustomPagination";
 import { toast } from "sonner";
-import ConfirmDialog from "../../../components/shared/confirm-alert";
+import ConfirmDialog from "../../../components/shared/ConfirmDialog";
+import FiltersBar from "../../../components/shared/FiltersBar";
+import PageContainer from "../../../components/shared/PageContainer";
+import { useModal } from "../../../hooks/use-modal";
+import CreateUserForm from "./create/CreateUserForm";
+import EditUserForm from "./update/EditUserForm";
 
 interface User {
   id: number;
@@ -21,9 +24,9 @@ interface User {
   active: string;
 }
 
-export default function PageUser() {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+export default function UserPage() {
+  const createModal = useModal();
+  const editModal = useModal();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState<null | (() => void)>(null);
@@ -62,7 +65,7 @@ export default function PageUser() {
   const handleAction = (action: ActionType, item: User) => {
     if (action === "edit") {
       setSelectedUser(item);
-      setIsEditModalOpen(true);
+      editModal.onChangeState();
     } else if (action === "delete") {
       setConfirmMessage(`¿Estás seguro de eliminar a ${item.name}?`);
       setConfirmAction(() => () => {
@@ -88,21 +91,22 @@ export default function PageUser() {
   };
 
   return (
-    <div className="flex flex-col gap-8 p-8">
+    <PageContainer>
       <PageHeader
         title="Usuario"
         buttonText="Nuevo Usuario"
         buttonIcon={UserPlus}
-        onButtonClick={() => setIsCreateModalOpen(true)}
+        onButtonClick={() => createModal.onChangeState()}
       />
 
-      <div className="flex flex-wrap items-center gap-4 p-6 rounded-xl bg-white shadow-sm">
+      <FiltersBar>
         <SearchInput
           placeholder={"Buscar Afiliados..."}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             console.log("Searching for:", e.target.value);
           }}
         />
+
         <FilterSelect
           placeholder="Seleccionar estados"
           value={""}
@@ -112,6 +116,7 @@ export default function PageUser() {
             { value: "male", label: "Inactivo" },
           ]}
         />
+
         <FilterSelect
           placeholder="Seleccionar Roles"
           value={""}
@@ -122,7 +127,7 @@ export default function PageUser() {
             { value: "female", label: "Empleado" },
           ]}
         />
-      </div>
+      </FiltersBar>
 
       <CustomTable
         data={paginatedAffiliates}
@@ -137,15 +142,17 @@ export default function PageUser() {
         onPageChange={setCurrentPage}
       />
 
-      <CreateUsers
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
+      <CreateUserForm
+        isOpen={createModal.modalStatus}
+        onClose={createModal.onChangeState}
       />
-      <EditUser
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+
+      <EditUserForm
+        isOpen={editModal.modalStatus}
+        onClose={editModal.onChangeState}
         userData={selectedUser}
       />
+
       <ConfirmDialog
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
@@ -153,6 +160,6 @@ export default function PageUser() {
         title="Confirmación Requerida"
         description={confirmMessage}
       />
-    </div>
+    </PageContainer>
   );
 }

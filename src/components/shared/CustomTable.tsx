@@ -6,14 +6,15 @@ import {
   MoreHorizontal,
   ChevronUp,
   ChevronDown,
+  Baby,
 } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "../../components/ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -21,7 +22,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table";
+} from "../ui/table";
 import { useState } from "react";
 
 export interface Column<T> {
@@ -31,7 +32,12 @@ export interface Column<T> {
   sortable?: boolean;
 }
 
-export type ActionType = "view" | "edit" | "delete" | "desactive";
+export type ActionType =
+  | "view"
+  | "edit"
+  | "delete"
+  | "desactive"
+  | "manageChildren";
 
 interface CustomTableProps<T> {
   data: T[];
@@ -54,6 +60,11 @@ export function CustomTable<T extends { id: number }>({
     edit: { icon: Pencil, label: "Editar", color: "text-green-500" },
     delete: { icon: Trash2, label: "Eliminar", color: "text-red-500" },
     desactive: { icon: Ban, label: "Desactivar", color: "text-yellow-500" },
+    manageChildren: {
+      icon: Baby,
+      label: "Gestionar Hijos",
+      color: "text-purple-500",
+    },
   };
 
   // Función para ordenar los datos

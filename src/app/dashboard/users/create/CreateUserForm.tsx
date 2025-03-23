@@ -11,15 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import DelegateDialog from "../../../../components/shared/custom-dialog";
-import ConfirmDialog from "../../../../components/shared/confirm-alert";
+import DelegateDialog from "../../../../components/shared/DelegateDialog";
+import ConfirmDialog from "../../../../components/shared/ConfirmDialog";
 
 interface CrearUsuarioProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function CrearUsuario({ isOpen, onClose }: CrearUsuarioProps) {
+export default function CreateUserForm({ isOpen, onClose }: CrearUsuarioProps) {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

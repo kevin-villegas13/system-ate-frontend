@@ -11,20 +11,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import DelegateDialog from "../../../../components/shared/custom-dialog";
-import ConfirmDialog from "../../../../components/shared/confirm-alert";
+import DelegateDialog from "../../../../components/shared/DelegateDialog";
+import ConfirmDialog from "../../../../components/shared/ConfirmDialog";
 
-interface EditarUsuarioProps {
+interface EditUserProps {
   isOpen: boolean;
   onClose: () => void;
-  userData: { name: string; role: string } | null;
+  userData: { id: number; name: string; role: string } | null;
 }
 
-export default function EditarUsuario({
+export default function EditUserForm({
   isOpen,
   onClose,
   userData,
-}: EditarUsuarioProps) {
+}: EditUserProps) {
   const [name, setName] = useState(userData?.name);
   const [role, setRole] = useState(userData?.role);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

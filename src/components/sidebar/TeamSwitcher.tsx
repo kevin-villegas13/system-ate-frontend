@@ -1,17 +1,10 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "../../components/ui/sidebar";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { useState } from "react";
 import { TeamSwitcherProps } from "./types/team-switcher.type";
 
 export function TeamSwitcher({ teams }: TeamSwitcherProps) {
-  const [activeTeam, setActiveTeam] = useState(teams[0]);
+  const [activeTeam] = useState(teams[0]);
 
   if (!activeTeam) return null;
 

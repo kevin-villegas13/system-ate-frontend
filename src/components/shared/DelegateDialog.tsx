@@ -35,9 +35,14 @@ export default function DelegateDialog({
         </DialogHeader>
         <div className="py-4">{children}</div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+          <Button
+            variant="outline"
+            className="border-black text-black hover:bg-black hover:text-white transition-colors"
+            onClick={onClose}
+          >
             Cancelar
           </Button>
+
           {footerButtons}
         </DialogFooter>
       </DialogContent>

@@ -6,10 +6,10 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "../../components/ui/sidebar";
-import { TeamSwitcher } from "./team-switcher";
-import { NavMain } from "./nav-main";
-import { NavUser } from "./nav-user";
+} from "../ui/sidebar";
+import { TeamSwitcher } from "./TeamSwitcher";
+import { NavMain } from "./NavMain";
+import { NavUser } from "./NavUser";
 import { ComponentProps } from "react";
 import { data } from "../../config/dashboard-sidebar";
 

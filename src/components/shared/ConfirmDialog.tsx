@@ -7,7 +7,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../../components/ui/alert-dialog";
+} from "../ui/alert-dialog";
 import { LucideIcon, AlertTriangle } from "lucide-react";
 
 interface ConfirmDialogProps {

@@ -7,21 +7,29 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../../components/ui/breadcrumb";
-import { Separator } from "../../components/ui/separator";
+} from "../components/ui/breadcrumb";
+import { Separator } from "../components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "../../components/ui/sidebar";
-import { AppSidebar } from "../../components/sidebar/app-sidebar";
+} from "../components/ui/sidebar";
+import { AppSidebar } from "../components/sidebar/AppSidebar";
 
 function getBreadcrumbItems(pathname: string) {
   const paths = pathname.split("/").filter(Boolean);
-  return paths.map((path, index) => ({
-    title: path.charAt(0).toUpperCase() + path.slice(1),
-    href: `/${paths.slice(0, index + 1).join("/")}`,
-  }));
+
+  return paths.map((path, index) => {
+    const isNumber = /^\d+$/.test(path);
+    const title = isNumber
+      ? "Detalles"
+      : path.charAt(0).toUpperCase() + path.slice(1);
+
+    return {
+      title,
+      href: isNumber ? undefined : `/${paths.slice(0, index + 1).join("/")}`,
+    };
+  });
 }
 
 export default function DashboardLayout() {
@@ -44,9 +52,16 @@ export default function DashboardLayout() {
             <Breadcrumb aria-label="Ruta de navegación">
               <BreadcrumbList>
                 {breadcrumbItems.map((item, index) => (
-                  <Fragment key={item.href}>
+                  <Fragment key={item.href || item.title}>
                     <BreadcrumbItem>
-                      {index === breadcrumbItems.length - 1 ? (
+                      {index === 0 && item.href === "/dashboard" ? (
+                        <BreadcrumbLink
+                          href={pathname}
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          {item.title}
+                        </BreadcrumbLink>
+                      ) : index === breadcrumbItems.length - 1 || !item.href ? (
                         <BreadcrumbPage>{item.title}</BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink href={item.href}>
