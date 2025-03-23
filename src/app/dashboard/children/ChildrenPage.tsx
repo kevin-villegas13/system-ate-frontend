@@ -1,15 +1,11 @@
-import { UserPlus } from "lucide-react";
-import PageContainer from "../../../../components/shared/PageContainer";
-import PageHeader from "../../../../components/shared/PageHeader";
-import { useModal } from "../../../../hooks/use-modal";
-import { useState } from "react";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../../components/shared/CustomTable";
-import { CustomPagination } from "../../../../components/shared/CustomPagination";
-import CreateChildForm from "./create/ChildrenAffiliateForm";
+import { ChangeEvent, useState } from "react";
+import FiltersBar from "../../../components/shared/FiltersBar";
+import PageContainer from "../../../components/shared/PageContainer";
+import SearchInput from "../../../components/shared/SearchInput";
+import FilterSelect from "../../../components/shared/FilterSelect";
+import { CustomPagination } from "../../../components/shared/CustomPagination";
+import { Column, CustomTable } from "../../../components/shared/CustomTable";
+import PageHeader from "../../../components/shared/PageHeader";
 
 interface Children {
   id: number;
@@ -22,9 +18,7 @@ interface Children {
   isActive: boolean;
 }
 
-export default function AffiliateChildrenPage() {
-  const createModal = useModal();
-
+export default function ChildrenPage() {
   // Lista de niños afiliados (ejemplo)
   const affiliateList: Children[] = [
     {
@@ -97,33 +91,56 @@ export default function AffiliateChildrenPage() {
     currentPage * itemsPerPage
   );
 
-  const handleAction = (action: ActionType) => {};
-
   return (
     <PageContainer>
       <PageHeader
-        title="Niños del Afiliado"
-        buttonText="Nuevo Niño"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
+        title="Niños"
+        buttonText=""
+        buttonIcon={undefined}
+        onButtonClick={() => {}}
       />
+
+      <FiltersBar>
+        <SearchInput
+          placeholder={"Buscar Afiliados..."}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            console.log("Searching for:", e.target.value);
+          }}
+        />
+
+        <FilterSelect
+          placeholder="Seleccionar estados"
+          value={""}
+          onChange={() => console.log("Crear nuevo afiliado")}
+          options={[
+            { value: "all", label: "Activo" },
+            { value: "male", label: "Inactivo" },
+          ]}
+        />
+
+        <FilterSelect
+          placeholder="Seleccionar Roles"
+          value={""}
+          onChange={() => console.log("Crear nuevo afiliado")}
+          options={[
+            { value: "all", label: "Todos" },
+            { value: "male", label: "Admin" },
+            { value: "female", label: "Empleado" },
+          ]}
+        />
+      </FiltersBar>
 
       <CustomTable
         data={paginatedAffiliates}
         columns={columns}
-        actions={["view", "edit", "delete"]}
-        onAction={handleAction}
+        actions={[]}
+        onAction={() => {}}
       />
 
       <CustomPagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
-      />
-
-      <CreateChildForm
-        isOpen={createModal.modalStatus}
-        onClose={createModal.onChangeState}
       />
     </PageContainer>
   );

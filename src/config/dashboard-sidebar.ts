@@ -6,9 +6,13 @@ import {
   GalleryVerticalEnd,
   Gift,
   History,
+  Home,
   ListChecks,
   MapPin,
+  Search,
+  User,
   UserCheck,
+  UserPlus,
   Users,
 } from "lucide-react";
 
@@ -27,20 +31,26 @@ export const data = {
   ],
   navMain: [
     {
+      title: "Dashboard",
+      icon: Home,
+      url: "/dashboard",
+      roles: ["Administrador", "Empleado"],
+    },
+    // Gestión de Usuarios
+    {
       title: "Gestión de Usuarios",
       icon: Users,
       isActive: true,
-      url: "#",
+      url: "/dashboard/usuarios",
       items: [
         {
           title: "Lista de Usuarios",
-          url: "/dashboard/users",
-          icon: Users,
+          url: "/dashboard/usuarios",
+          icon: User,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
-
     // Gestión de Afiliados
     {
       title: "Gestión de Afiliados",
@@ -50,13 +60,13 @@ export const data = {
       items: [
         {
           title: "Consultar Afiliados",
-          url: "/dashboard/affiliate",
-          icon: Users,
+          url: "/dashboard/afiliados",
+          icon: UserPlus,
           roles: ["Administrador", "Empleado"],
         },
         {
           title: "Hijos de Afiliados",
-          url: "/dashboard/affiliate/children",
+          url: "/dashboard/hijos",
           icon: Baby,
           roles: ["Administrador", "Empleado"],
         },
@@ -79,6 +89,20 @@ export const data = {
           url: "/dashboard/benefit/assign/delegate",
           icon: ClipboardCheck,
           roles: ["Administrador"],
+        },
+      ],
+    },
+    // Apartado de Gestión de Sectores
+    {
+      title: "Gestión de Sectores",
+      icon: MapPin, // Icono para sectores
+      url: "#",
+      items: [
+        {
+          title: "Consultar Sectores",
+          url: "/dashboard/sector",
+          icon: Search,
+          roles: ["Administrador", "Empleado"],
         },
       ],
     },
@@ -122,76 +146,62 @@ export const data = {
         },
       ],
     },
-    // **Gestión de Usuarios**
-    {
-      title: "Gestión de Usuarios",
-      icon: UserCheck,
-      url: "#",
-      items: [
-        {
-          title: "Consultar Usuarios",
-          url: "/dashboard/user",
-          icon: Users,
-          roles: ["Administrador"],
-        },
-      ],
-    },
-    // **Reportes Básicos**
-    {
-      title: "Reportes Básicos",
-      icon: FileText,
-      url: "#",
-      items: [
-        {
-          title: "Afiliados y Beneficios",
-          url: "/dashboard/report/affiliates-benefits",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Entregas Realizadas",
-          url: "/dashboard/report/deliveries",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Beneficios Disponibles",
-          url: "/dashboard/report/benefits-available",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Beneficios Agotados",
-          url: "/dashboard/report/benefits-exhausted",
-          roles: ["Administrador"],
-        },
-      ],
-    },
+    // // **Reportes Básicos**
+    // {
+    //   title: "Reportes Básicos",
+    //   icon: FileText,
+    //   url: "#",
+    //   items: [
+    //     {
+    //       title: "Afiliados y Beneficios",
+    //       url: "/dashboard/report/affiliates-benefits",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Entregas Realizadas",
+    //       url: "/dashboard/report/deliveries",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Beneficios Disponibles",
+    //       url: "/dashboard/report/benefits-available",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Beneficios Agotados",
+    //       url: "/dashboard/report/benefits-exhausted",
+    //       roles: ["Administrador"],
+    //     },
+    //   ],
+    // },
 
-    // **Informes Detallados**
-    {
-      title: "Informes Detallados",
-      icon: FileText,
-      url: "#",
-      items: [
-        {
-          title: "Afiliados y Beneficios Asignados",
-          url: "/dashboard/report/detailed/affiliates-benefits",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Inventario de Beneficios",
-          url: "/dashboard/report/detailed/benefit-inventory",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Delegados y Actividad",
-          url: "/dashboard/report/detailed/delegates-status",
-          roles: ["Administrador"],
-        },
-        {
-          title: "Registro de Eventos",
-          url: "/dashboard/report/detailed/events-record",
-          roles: ["Administrador"],
-        },
-      ],
-    },
+    // // **Informes Detallados**
+    // {
+    //   title: "Informes Detallados",
+    //   icon: FileText,
+    //   url: "#",
+    //   items: [
+    //     {
+    //       title: "Afiliados y Beneficios Asignados",
+    //       url: "/dashboard/report/detailed/affiliates-benefits",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Inventario de Beneficios",
+    //       url: "/dashboard/report/detailed/benefit-inventory",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Delegados y Actividad",
+    //       url: "/dashboard/report/detailed/delegates-status",
+    //       roles: ["Administrador"],
+    //     },
+    //     {
+    //       title: "Registro de Eventos",
+    //       url: "/dashboard/report/detailed/events-record",
+    //       roles: ["Administrador"],
+    //     },
+    //   ],
+    // },
   ],
 };

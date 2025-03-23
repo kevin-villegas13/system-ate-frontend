@@ -3,6 +3,6 @@ import { LucideIcon } from "lucide-react";
 export interface PageProps {
   title: string;
   buttonText: string;
-  buttonIcon: LucideIcon;
+  buttonIcon?: LucideIcon;
   onButtonClick: () => void;
 }

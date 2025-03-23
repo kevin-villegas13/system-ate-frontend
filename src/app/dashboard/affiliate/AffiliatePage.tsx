@@ -82,7 +82,7 @@ export default function AffiliatePage() {
       setSelectedAffiliate(item);
       detailsModal.onChangeState();
     } else if (action === "manageChildren") {
-      navigate(`/dashboard/affiliate/${item.id}/children`);
+      navigate(`/dashboard/afiliados/${item.id}/hijos`);
     }
   };
 
