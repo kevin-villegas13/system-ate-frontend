@@ -7,16 +7,7 @@ import {
   DialogFooter,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { ReactNode } from "react";
-
-interface DelegateDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  description?: string;
-  children: ReactNode;
-  footerButtons?: ReactNode;
-}
+import { DelegateDialogProps } from "./types/dialogs";
 
 export default function DelegateDialog({
   isOpen,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Building, Baby, Accessibility, Phone, Mail } from "lucide-react";
-import DelegateDialog from "../../../../components/shared/DelegateDialog";
+import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
 import { Button } from "../../../../components/ui/button";
 import { Badge } from "../../../../components/ui/badge"; // Asegúrate de importar Badge
 

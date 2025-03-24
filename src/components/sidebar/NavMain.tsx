@@ -27,7 +27,6 @@ export function NavMain({ items }: NavMainProps) {
       <>
         <SidebarMenuButton tooltip={title}>
           {Icon && <Icon />}
-          <span>{title}</span>
           {url && <a href={url}>{title}</a>}
         </SidebarMenuButton>
       </>

@@ -1,13 +1,4 @@
-import {
-  Pencil,
-  Trash2,
-  Eye,
-  Ban,
-  MoreHorizontal,
-  ChevronUp,
-  ChevronDown,
-  Baby,
-} from "lucide-react";
+import { MoreHorizontal, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -23,28 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useState } from "react";
-
-export interface Column<T> {
-  key: keyof T;
-  label: string;
-  render?: (item: T) => React.ReactNode;
-  sortable?: boolean;
-}
-
-export type ActionType =
-  | "view"
-  | "edit"
-  | "delete"
-  | "desactive"
-  | "manageChildren";
-
-interface CustomTableProps<T> {
-  data: T[];
-  columns: Column<T>[];
-  actions?: ActionType[];
-  onAction: (action: ActionType, item: T) => void;
-}
+import { useState, useMemo, useCallback } from "react";
+import { CustomTableProps } from "./types/table";
+import { useActionIcons } from "../../hooks/useActionIcons";
 
 export function CustomTable<T extends { id: number }>({
   data,
@@ -52,45 +24,41 @@ export function CustomTable<T extends { id: number }>({
   actions = ["view", "edit", "delete", "desactive"],
   onAction,
 }: CustomTableProps<T>) {
+  const actionIcons = useActionIcons();
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const actionIcons = {
-    view: { icon: Eye, label: "Ver", color: "text-blue-500" },
-    edit: { icon: Pencil, label: "Editar", color: "text-green-500" },
-    delete: { icon: Trash2, label: "Eliminar", color: "text-red-500" },
-    desactive: { icon: Ban, label: "Desactivar", color: "text-yellow-500" },
-    manageChildren: {
-      icon: Baby,
-      label: "Gestionar Hijos",
-      color: "text-purple-500",
+  // Función para manejar el ordenamiento
+  const handleSort = useCallback(
+    (column: keyof T) => {
+      setSortColumn((prevColumn) => {
+        const newOrder =
+          prevColumn === column && sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(newOrder);
+        return column;
+      });
     },
-  };
+    [sortOrder]
+  );
 
-  // Función para ordenar los datos
-  const sortedData = [...data].sort((a, b) => {
-    if (!sortColumn) return 0;
-    const valueA = a[sortColumn];
-    const valueB = b[sortColumn];
+  // Ordenar los datos según la columna seleccionada con useMemo para mejorar rendimiento
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => {
+      if (!sortColumn) return 0;
+      const valueA = a[sortColumn];
+      const valueB = b[sortColumn];
 
-    if (typeof valueA === "number" && typeof valueB === "number") {
-      return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
-    }
-    if (typeof valueA === "string" && typeof valueB === "string") {
-      return sortOrder === "asc"
-        ? valueA.localeCompare(valueB)
-        : valueB.localeCompare(valueA);
-    }
-    return 0;
-  });
+      if (typeof valueA === "number" && typeof valueB === "number")
+        return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
 
-  // Manejo de ordenamiento por columna
-  const handleSort = (column: keyof T) => {
-    sortColumn === column
-      ? setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-      : setSortColumn(column),
-      setSortOrder("asc");
-  };
+      if (typeof valueA === "string" && typeof valueB === "string")
+        return sortOrder === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+
+      return 0;
+    });
+  }, [data, sortColumn, sortOrder]);
 
   return (
     <div className="overflow-x-auto rounded-lg bg-white shadow-md">
@@ -98,18 +66,18 @@ export function CustomTable<T extends { id: number }>({
         {/* Encabezado */}
         <TableHeader>
           <TableRow className="bg-gray-100">
-            {columns.map((column) => (
+            {columns.map(({ key, label, sortable }) => (
               <TableHead
-                key={String(column.key)}
-                onClick={() => column.sortable && handleSort(column.key)}
+                key={String(key)}
+                onClick={() => sortable && handleSort(key)}
                 className={`p-4 text-gray-700 font-semibold uppercase text-sm text-center border-b cursor-pointer ${
-                  column.sortable ? "hover:bg-gray-200" : ""
+                  sortable ? "hover:bg-gray-200" : ""
                 }`}
               >
                 <div className="flex items-center justify-center gap-2">
-                  {column.label}
-                  {column.sortable &&
-                    sortColumn === column.key &&
+                  {label}
+                  {sortable &&
+                    sortColumn === key &&
                     (sortOrder === "asc" ? (
                       <ChevronUp size={16} />
                     ) : (
@@ -135,14 +103,12 @@ export function CustomTable<T extends { id: number }>({
                 index % 2 === 0 ? "bg-white" : "bg-gray-50"
               } hover:bg-gray-100`}
             >
-              {columns.map((column) => (
+              {columns.map(({ key, render }) => (
                 <TableCell
-                  key={String(column.key)}
+                  key={String(key)}
                   className="p-4 text-gray-800 text-center border-b"
                 >
-                  {column.render
-                    ? column.render(item)
-                    : String(item[column.key])}
+                  {render ? render(item) : String(item[key])}
                 </TableCell>
               ))}
 
@@ -169,6 +135,7 @@ export function CustomTable<T extends { id: number }>({
                           label,
                           color,
                         } = actionIcons[action];
+
                         return (
                           <DropdownMenuItem
                             key={action}

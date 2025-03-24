@@ -7,6 +7,7 @@ import ChildrenPage from "../app/dashboard/children/ChildrenPage";
 import DashboardHomePage from "../app/dashboard/home/DashboardHomePage";
 import EventPage from "../app/dashboard/events/EventPage";
 import SectorPage from "../app/dashboard/sectors/SectorsPage";
+import DelegatesPage from "../app/dashboard/delegates/DelegatesPage";
 
 export default function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
         <Route path="hijos" element={<ChildrenPage />} />
         <Route path="eventos" element={<EventPage />} />
         <Route path="sectores" element={<SectorPage />} />
+        <Route path="delegados" element={<DelegatesPage />} />
       </Route>
     </Routes>
   );

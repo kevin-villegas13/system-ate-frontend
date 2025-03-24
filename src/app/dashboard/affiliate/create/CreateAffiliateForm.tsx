@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import DelegateDialog from "../../../../components/shared/DelegateDialog";
+import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";

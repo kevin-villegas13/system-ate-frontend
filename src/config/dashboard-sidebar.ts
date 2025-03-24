@@ -30,122 +30,108 @@ export const data = {
     },
   ],
   navMain: [
+    // 📌 PRINCIPAL
     {
-      title: "Dashboard",
+      title: "Inicio",
       icon: Home,
       url: "/dashboard",
       roles: ["Administrador", "Empleado"],
     },
-    // Gestión de Usuarios
+    // 📌 USUARIOS Y AFILIADOS
     {
-      title: "Gestión de Usuarios",
-      icon: Users,
-      isActive: true,
-      url: "/dashboard/usuarios",
-      items: [
-        {
-          title: "Lista de Usuarios",
-          url: "/dashboard/usuarios",
-          icon: User,
-          roles: ["Administrador", "Empleado"],
-        },
-      ],
-    },
-    // Gestión de Afiliados
-    {
-      title: "Gestión de Afiliados",
+      title: "Usuarios",
       icon: Users,
       isActive: true,
       url: "#",
       items: [
         {
-          title: "Consultar Afiliados",
+          title: "Lista",
+          url: "/dashboard/usuarios",
+          icon: User,
+          roles: ["Administrador", "Empleado"],
+        },
+        {
+          title: "Afiliados",
           url: "/dashboard/afiliados",
           icon: UserPlus,
           roles: ["Administrador", "Empleado"],
         },
         {
-          title: "Hijos de Afiliados",
+          title: "Hijos",
           url: "/dashboard/hijos",
           icon: Baby,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
-    // Gestión de Delegados
+
+    // 📌 DELEGADOS Y SECTORES
     {
-      title: "Gestión de Delegados",
+      title: "Delegados",
       icon: UserCheck,
       url: "#",
       items: [
         {
-          title: "Consultar Delegados",
-          url: "/dashboard/delegate",
+          title: "Consultar",
+          url: "/dashboard/delegados",
           icon: Users,
           roles: ["Administrador", "Empleado"],
         },
         {
-          title: "Beneficios Asignados",
+          title: "Beneficios",
           url: "/dashboard/benefit/assign/delegate",
           icon: ClipboardCheck,
           roles: ["Administrador"],
         },
-      ],
-    },
-    // Apartado de Gestión de Sectores
-    {
-      title: "Gestión de Sectores",
-      icon: MapPin, // Icono para sectores
-      url: "#",
-      items: [
         {
-          title: "Consultar Sectores",
+          title: "Sectores",
           url: "/dashboard/sectores",
           icon: Search,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
-    // Gestión de Beneficios
+    // 📌 BENEFICIOS Y EVENTOS
     {
-      title: "Gestión de Beneficios",
+      title: "Beneficios",
       icon: Gift,
       url: "#",
       items: [
         {
-          title: "Consultar Beneficios",
+          title: "Consultar",
           url: "/dashboard/benefit",
           icon: ListChecks,
           roles: ["Administrador", "Empleado"],
         },
         {
-          title: "Historial de Beneficios",
+          title: "Historial",
           url: "/dashboard/benefit/history",
           icon: FileText,
           roles: ["Administrador", "Empleado"],
         },
         {
-          title: "Consultar Entregas",
+          title: "Entregas",
           url: "/dashboard/benefit/delivery",
           icon: ClipboardList,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
-    // Gestión de Eventos
+
     {
-      title: "Gestión de Eventos",
+      title: "Eventos",
       icon: History,
       url: "#",
       items: [
         {
-          title: "Consultar Eventos",
+          title: "Consultar",
           url: "/dashboard/eventos",
           icon: MapPin,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
+
     // // **Reportes Básicos**
     // {
     //   title: "Reportes Básicos",

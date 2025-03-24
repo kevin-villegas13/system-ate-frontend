@@ -11,22 +11,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import DelegateDialog from "../../../../components/shared/DelegateDialog";
-import ConfirmDialog from "../../../../components/shared/ConfirmDialog";
+import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
+import ConfirmDialog from "../../../../components/dialogs/ConfirmDialog";
+import { EditModalProps } from "../../../../components/dialogs/types/modal.types";
 
-interface EditUserProps {
-  isOpen: boolean;
-  onClose: () => void;
-  userData: { id: number; name: string; role: string } | null;
+interface User {
+  id: number;
+  name: string;
+  role: string;
 }
 
 export default function EditUserForm({
   isOpen,
   onClose,
-  userData,
-}: EditUserProps) {
-  const [name, setName] = useState(userData?.name);
-  const [role, setRole] = useState(userData?.role);
+  data,
+}: EditModalProps<User>) {
+  const [name, setName] = useState(data?.name);
+  const [role, setRole] = useState(data?.role);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleOpenConfirm = () => {

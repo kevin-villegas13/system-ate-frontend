@@ -8,18 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
-import { LucideIcon, AlertTriangle } from "lucide-react";
-
-interface ConfirmDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  description: string;
-  confirmLabel?: string;
-  icon?: LucideIcon;
-  confirmColor?: string;
-}
+import { AlertTriangle } from "lucide-react";
+import { ConfirmDialogProps } from "./types/dialogs";
 
 export default function ConfirmDialog({
   isOpen,

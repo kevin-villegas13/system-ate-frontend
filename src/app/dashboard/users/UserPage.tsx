@@ -1,21 +1,18 @@
 import { ChangeEvent, useState } from "react";
-import PageHeader from "../../../components/shared/PageHeader";
 import { UserPlus } from "lucide-react";
+import PageHeader from "../../../components/shared/PageHeader";
 import SearchInput from "../../../components/shared/SearchInput";
 import FilterSelect from "../../../components/shared/FilterSelect";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../components/shared/CustomTable";
+import { CustomTable } from "../../../components/shared/CustomTable";
 import { CustomPagination } from "../../../components/shared/CustomPagination";
-import { toast } from "sonner";
-import ConfirmDialog from "../../../components/shared/ConfirmDialog";
+import ConfirmDialog from "../../../components/dialogs/ConfirmDialog";
 import FiltersBar from "../../../components/shared/FiltersBar";
 import PageContainer from "../../../components/shared/PageContainer";
 import { useModal } from "../../../hooks/use-modal";
 import CreateUserForm from "./create/CreateUserForm";
 import EditUserForm from "./update/EditUserForm";
+import { ActionType, Column } from "../../../components/shared/types/table";
+import { showErrorToast, showSuccessToast } from "../../../utils/toast";
 
 interface User {
   id: number;
@@ -69,25 +66,22 @@ export default function UserPage() {
     } else if (action === "delete") {
       setConfirmMessage(`¿Estás seguro de eliminar a ${item.name}?`);
       setConfirmAction(() => () => {
-        // Aquí iría la lógica para eliminar el usuario
-        toast.success(`Usuario ${item.name} eliminado con éxito`);
+        showSuccessToast(`Usuario ${item.name} desactivado`);
       });
       setIsConfirmOpen(true);
     } else if (action === "desactive") {
       setConfirmMessage(`¿Quieres desactivar a ${item.name}?`);
       setConfirmAction(() => () => {
-        // Aquí iría la lógica para desactivar el usuario
-        toast.success(`Usuario ${item.name} desactivado`);
+        showErrorToast("Ocurrió un error al desactivar el usuario");
       });
       setIsConfirmOpen(true);
     }
   };
 
   const handleConfirm = () => {
-    if (confirmAction) {
-      confirmAction(); // Ejecuta la acción almacenada (eliminar o desactivar)
-    }
-    setIsConfirmOpen(false); // Cierra el modal
+    if (confirmAction) confirmAction();
+
+    setIsConfirmOpen(false);
   };
 
   return (
@@ -150,7 +144,7 @@ export default function UserPage() {
       <EditUserForm
         isOpen={editModal.modalStatus}
         onClose={editModal.onChangeState}
-        userData={selectedUser}
+        data={selectedUser}
       />
 
       <ConfirmDialog

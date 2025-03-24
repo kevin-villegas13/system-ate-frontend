@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Baby } from "lucide-react";
-import DelegateDialog from "../../../../../components/shared/DelegateDialog";
+import DelegateDialog from "../../../../../components/dialogs/DelegateDialog";
 import { Button } from "../../../../../components/ui/button";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "../../../../../components/ui/input";
