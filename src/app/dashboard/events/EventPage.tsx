@@ -1,18 +1,16 @@
 import { UserPlus } from "lucide-react";
-import PageContainer from "../../../components/shared/PageContainer";
-import PageHeader from "../../../components/shared/PageHeader";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import SearchInput from "../../../components/shared/SearchInput";
-import FilterSelect from "../../../components/shared/FilterSelect";
+import PageContainer from "../../../components/organisms/PageContainer";
+import PageHeader from "../../../components/organisms/PageHeader";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import FilterSelect from "../../../components/molecules/FilterSelect";
 import { ChangeEvent, useState } from "react";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../components/shared/CustomTable";
-import { useModal } from "../../../hooks/use-modal";
+import { useModal } from "../../../lib/hooks/use-modal";
 import CreateEventForm from "./create/CreateEventForm";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import CustomButton from "../../../components/atoms/CustomButton";
+import SearchInput from "../../../components/molecules/SearchInput";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
 
 interface User {
   id: number;
@@ -58,12 +56,13 @@ export default function EventPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Eventos"
-        buttonText="Evento Usuario"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="Eventos">
+        <CustomButton
+          buttonText="Agregar Eventos"
+          icon={UserPlus}
+          onClick={createModal.onChangeState}
+        />
+      </PageHeader>
 
       <FiltersBar>
         <SearchInput

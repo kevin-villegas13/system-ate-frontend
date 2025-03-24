@@ -11,9 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
-import ConfirmDialog from "../../../../components/dialogs/ConfirmDialog";
-import { ModalProps } from "../../../../components/dialogs/types/modal.types";
+import { ModalProps } from "../../../../lib/types/modal/modal.types";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
+import ConfirmDialog from "../../../../components/organisms/dialogs/ConfirmDialog";
 
 export default function CreateUserForm({ isOpen, onClose }: ModalProps) {
   const [name, setName] = useState("");

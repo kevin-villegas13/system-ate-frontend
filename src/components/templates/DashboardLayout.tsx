@@ -13,7 +13,7 @@ import {
 } from "../components/ui/sidebar";
 import { AppSidebar } from "../components/sidebar/AppSidebar";
 import { Separator } from "../components/ui/separator";
-import { getBreadcrumbItems } from "../utils/getBreadcrumbItems";
+import { getBreadcrumbItems } from "../lib/utils/getBreadcrumbItems";
 import BreadcrumbLinkItem from "../components/shared/BreadcrumbLinkItem";
 
 export default function DashboardLayout() {

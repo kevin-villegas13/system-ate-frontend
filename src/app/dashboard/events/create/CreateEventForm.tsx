@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
@@ -18,7 +17,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../../components/ui/popover";
-import { Calendar } from "../../../../components/ui/calendar"; // import Calendar component
+import { Calendar } from "../../../../components/ui/calendar";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 import { format } from "date-fns";
 
 const eventTypes = [
@@ -77,6 +77,7 @@ export default function CreateEventForm({
 
   return (
     <DelegateDialog
+      className=" max-w-lg"
       isOpen={isOpen}
       onClose={onClose}
       title="Create New Event"

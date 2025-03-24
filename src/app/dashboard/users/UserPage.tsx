@@ -1,18 +1,19 @@
 import { ChangeEvent, useState } from "react";
 import { UserPlus } from "lucide-react";
-import PageHeader from "../../../components/shared/PageHeader";
-import SearchInput from "../../../components/shared/SearchInput";
-import FilterSelect from "../../../components/shared/FilterSelect";
-import { CustomTable } from "../../../components/shared/CustomTable";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
-import ConfirmDialog from "../../../components/dialogs/ConfirmDialog";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import PageContainer from "../../../components/shared/PageContainer";
-import { useModal } from "../../../hooks/use-modal";
+import PageHeader from "../../../components/organisms/PageHeader";
+import FilterSelect from "../../../components/molecules/FilterSelect";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import PageContainer from "../../../components/organisms/PageContainer";
+import { useModal } from "../../../lib/hooks/use-modal";
 import CreateUserForm from "./create/CreateUserForm";
 import EditUserForm from "./update/EditUserForm";
-import { ActionType, Column } from "../../../components/shared/types/table";
-import { showErrorToast, showSuccessToast } from "../../../utils/toast";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import { showErrorToast, showSuccessToast } from "../../../lib/utils/toast";
+import CustomButton from "../../../components/atoms/CustomButton";
+import SearchInput from "../../../components/molecules/SearchInput";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
+import ConfirmDialog from "../../../components/organisms/dialogs/ConfirmDialog";
 
 interface User {
   id: number;
@@ -86,12 +87,13 @@ export default function UserPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Usuario"
-        buttonText="Nuevo Usuario"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="Usuarios">
+        <CustomButton
+          buttonText="Agregar Usuario"
+          icon={UserPlus}
+          onClick={createModal.onChangeState}
+        />
+      </PageHeader>
 
       <FiltersBar>
         <SearchInput

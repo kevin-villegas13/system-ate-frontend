@@ -1,8 +1,8 @@
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
+import { UserCheck } from "lucide-react";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
-import { UserCheck } from "lucide-react";
 
 interface CrearAfiliadoProps {
   isOpen: boolean;

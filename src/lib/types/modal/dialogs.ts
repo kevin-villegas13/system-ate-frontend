@@ -16,6 +16,7 @@ export interface DelegateDialogProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  className: string;
   description?: string;
   children: ReactNode;
   footerButtons?: ReactNode;

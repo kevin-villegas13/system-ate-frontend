@@ -5,21 +5,25 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+} from "../../ui/dialog";
+import { Button } from "../../ui/button";
 import { DelegateDialogProps } from "./types/dialogs";
+import clsx from "clsx";
 
 export default function DelegateDialog({
   isOpen,
   onClose,
   title,
+  className,
   description,
   children,
   footerButtons,
 }: DelegateDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent
+        className={clsx("sm:max-w-[600px] w-full px-6", className)}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { SearchInputProps } from "./types/input.types";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
+import { SearchInputProps } from "../../lib/types/inputSearch/input.types";
 
 export default function SearchInput({
   placeholder,

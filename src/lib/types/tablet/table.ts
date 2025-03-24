@@ -3,6 +3,7 @@ export type ActionType =
   | "edit"
   | "delete"
   | "desactive"
+  | "assign"
   | "manageChildren";
 
 export interface Column<T> {

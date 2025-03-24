@@ -1,7 +1,7 @@
 import { UserPlus } from "lucide-react";
-import PageContainer from "../../../../components/shared/PageContainer";
-import PageHeader from "../../../../components/shared/PageHeader";
-import { useModal } from "../../../../hooks/use-modal";
+import PageContainer from "../../../../components/organisms/PageContainer";
+import PageHeader from "../../../../components/organisms/PageHeader";
+import { useModal } from "../../../../lib/hooks/use-modal";
 import { useState } from "react";
 import {
   ActionType,

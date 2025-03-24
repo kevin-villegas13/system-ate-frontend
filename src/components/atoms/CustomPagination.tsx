@@ -1,3 +1,4 @@
+import { CustomPaginationProps } from "../../lib/types/pagination/pagination.types";
 import {
   Pagination,
   PaginationContent,
@@ -6,7 +7,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { CustomPaginationProps } from "./types/pagination.types";
 
 export function CustomPagination({
   currentPage,

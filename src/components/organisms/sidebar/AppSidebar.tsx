@@ -6,12 +6,12 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "../ui/sidebar";
+} from "../../ui/sidebar";
 import { TeamSwitcher } from "./TeamSwitcher";
 import { NavMain } from "./NavMain";
 import { NavUser } from "./NavUser";
 import { ComponentProps } from "react";
-import { data } from "../../config/dashboard-sidebar";
+import { data } from "../../../config/dashboard-sidebar";
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (

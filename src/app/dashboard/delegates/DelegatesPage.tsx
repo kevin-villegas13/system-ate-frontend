@@ -1,19 +1,19 @@
-import { UserPlus } from "lucide-react";
-import PageContainer from "../../../components/shared/PageContainer";
-import PageHeader from "../../../components/shared/PageHeader";
-import { useModal } from "../../../hooks/use-modal";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import SearchInput from "../../../components/shared/SearchInput";
 import { ChangeEvent, useState } from "react";
-import FilterSelect from "../../../components/shared/FilterSelect";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../components/shared/CustomTable";
-import { usePagination } from "../../../hooks/use-Pagination";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
+import { useNavigate } from "react-router-dom";
+import { Settings, UserPlus } from "lucide-react";
+import PageContainer from "../../../components/organisms/PageContainer";
+import PageHeader from "../../../components/organisms/PageHeader";
+import { useModal } from "../../../lib/hooks/use-modal";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import FilterSelect from "../../../components/molecules/FilterSelect";
 import CreateDelegatesForm from "./create/CreateDelegatesForm";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import AssignDelegates from "./assign/AssignDelegates";
+import { usePagination } from "../../../lib/hooks/use-Pagination";
+import CustomButton from "../../../components/atoms/CustomButton";
+import SearchInput from "../../../components/molecules/SearchInput";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
 
 interface Delegate {
   id: number;
@@ -25,7 +25,10 @@ interface Delegate {
 }
 
 export default function DelegatesPage() {
+  const navigate = useNavigate();
   const createModal = useModal();
+  const assingModal = useModal();
+
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
   const delegates: Delegate[] = [
@@ -70,17 +73,30 @@ export default function DelegatesPage() {
   );
 
   const handleAction = (action: ActionType) => {
-    console.log(`Acción ejecutada: ${action}`);
+    if (action === "assign") {
+      assingModal.onChangeState();
+    }
   };
 
   return (
     <PageContainer>
-      <PageHeader
-        title="DELEGADOS"
-        buttonText="Nuevo Delegado"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="DELEGADOS">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-2">
+          <CustomButton
+            buttonText="Gestionar Beneficios"
+            icon={Settings}
+            className="bg-blue-500 hover:bg-blue-600 text-white w-full sm:w-auto"
+            onClick={() => navigate("gestionar-beneficio")}
+          />
+
+          <CustomButton
+            buttonText="Agregar Delegado"
+            icon={UserPlus}
+            className="bg-green-500 hover:bg-green-600 text-white w-full sm:w-auto"
+            onClick={createModal.onChangeState}
+          />
+        </div>
+      </PageHeader>
 
       <FiltersBar>
         <SearchInput
@@ -105,7 +121,7 @@ export default function DelegatesPage() {
       <CustomTable
         data={paginatedData}
         columns={columns}
-        actions={["edit", "delete", "desactive", "view"]}
+        actions={["view", "edit", "assign", "delete", "desactive"]}
         onAction={handleAction}
       />
 
@@ -118,6 +134,11 @@ export default function DelegatesPage() {
       <CreateDelegatesForm
         isOpen={createModal.modalStatus}
         onClose={createModal.onChangeState}
+      />
+
+      <AssignDelegates
+        isOpen={assingModal.modalStatus}
+        onClose={assingModal.onChangeState}
       />
     </PageContainer>
   );

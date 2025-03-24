@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import PageContainer from "../../../components/shared/PageContainer";
-import SearchInput from "../../../components/shared/SearchInput";
-import FilterSelect from "../../../components/shared/FilterSelect";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
-import { Column, CustomTable } from "../../../components/shared/CustomTable";
-import PageHeader from "../../../components/shared/PageHeader";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import PageContainer from "../../../components/organisms/PageContainer";
+import FilterSelect from "../../../components/molecules/FilterSelect";
+import PageHeader from "../../../components/organisms/PageHeader";
+import { Column } from "../../../lib/types/tablet/table";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
+import SearchInput from "../../../components/molecules/SearchInput";
 
 interface Children {
   id: number;
@@ -93,12 +94,7 @@ export default function ChildrenPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Niños"
-        buttonText=""
-        buttonIcon={undefined}
-        onButtonClick={() => {}}
-      />
+      <PageHeader title="Niños" />
 
       <FiltersBar>
         <SearchInput

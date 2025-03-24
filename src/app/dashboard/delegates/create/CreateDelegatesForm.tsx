@@ -1,4 +1,4 @@
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
@@ -28,6 +28,7 @@ export default function CreateDelegatesForm({
 }: CreateDelegateProps) {
   return (
     <DelegateDialog
+      className="max-w-lg"
       isOpen={isOpen}
       onClose={onClose}
       title="Register New Delegate"

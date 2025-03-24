@@ -1,17 +1,17 @@
 import { UserPlus } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import PageHeader from "../../../components/shared/PageHeader";
-import FilterSelect from "../../../components/shared/FilterSelect";
+import PageHeader from "../../../components/organisms/PageHeader";
+import FilterSelect from "../../../components/molecules/FilterSelect";
 import SearchInput from "../../../components/shared/SearchInput";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import PageContainer from "../../../components/shared/PageContainer";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import PageContainer from "../../../components/organisms/PageContainer";
 import {
   ActionType,
   Column,
   CustomTable,
 } from "../../../components/shared/CustomTable";
 import { CustomPagination } from "../../../components/shared/CustomPagination";
-import { useModal } from "../../../hooks/use-modal";
+import { useModal } from "../../../lib/hooks/use-modal";
 import CreateAffiliateForm from "./create/CreateAffiliateForm";
 import DetailAffiliate from "./detail/DetailAffiliate";
 import { useNavigate } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import PageContainer from "../../../components/shared/PageContainer";
+import PageContainer from "../../../components/organisms/PageContainer";
 import { useState } from "react";
 import {
   Card,

@@ -11,9 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
-import ConfirmDialog from "../../../../components/dialogs/ConfirmDialog";
-import { EditModalProps } from "../../../../components/dialogs/types/modal.types";
+import { EditModalProps } from "../../../../lib/types/modal/modal.types";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
+import ConfirmDialog from "../../../../components/organisms/dialogs/ConfirmDialog";
 
 interface User {
   id: number;

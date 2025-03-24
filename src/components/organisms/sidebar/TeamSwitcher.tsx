@@ -1,5 +1,9 @@
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { DropdownMenu, DropdownMenuTrigger } from "../../ui/dropdown-menu";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "../../ui/sidebar";
 import { useState } from "react";
 import { TeamSwitcherProps } from "./types/team-switcher.type";
 

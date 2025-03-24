@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Filter } from "lucide-react";
-import { FilterSelectProps } from "./types/select.types";
+import { FilterSelectProps } from "../../lib/types/select/select.types";
 import { useState } from "react";
 
 export default function FilterSelect({
@@ -39,10 +39,10 @@ export default function FilterSelect({
         <Filter className="h-5 w-5 text-gray-500" />
       </SelectTrigger>
 
-      <SelectContent className="w-full max-w-[350px]">
+      <SelectContent className="w-full max-w-[350px] sm:max-w-[250px] md:max-w-[300px]">
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
-            {option.label} {selectedValue === option.value}
+            {option.label}
           </SelectItem>
         ))}
       </SelectContent>

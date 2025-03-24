@@ -1,18 +1,16 @@
 import { ChangeEvent } from "react";
 import { UserPlus } from "lucide-react";
-import PageContainer from "../../../components/shared/PageContainer";
-import PageHeader from "../../../components/shared/PageHeader";
-import FiltersBar from "../../../components/shared/FiltersBar";
-import SearchInput from "../../../components/shared/SearchInput";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../components/shared/CustomTable";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
-import { usePagination } from "../../../hooks/use-Pagination";
-import { useModal } from "../../../hooks/use-modal";
+import PageContainer from "../../../components/organisms/PageContainer";
+import PageHeader from "../../../components/organisms/PageHeader";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { useModal } from "../../../lib/hooks/use-modal";
 import CreateEventForm from "./create/CreateSectorForm";
+import CustomButton from "../../../components/atoms/CustomButton";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import SearchInput from "../../../components/molecules/SearchInput";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
 
 interface Sector {
   id: number;
@@ -53,12 +51,13 @@ export default function SectorPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Sectores"
-        buttonText="Nuevos Sectores"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="Sectores">
+        <CustomButton
+          buttonText="Agregar Usuario"
+          icon={UserPlus}
+          onClick={createModal.onChangeState}
+        />
+      </PageHeader>
 
       <FiltersBar>
         <SearchInput
