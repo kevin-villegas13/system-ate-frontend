@@ -1,15 +1,13 @@
+import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import PageContainer from "../../../../components/organisms/PageContainer";
 import PageHeader from "../../../../components/organisms/PageHeader";
 import { useModal } from "../../../../lib/hooks/use-modal";
-import { useState } from "react";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../../components/shared/CustomTable";
-import { CustomPagination } from "../../../../components/shared/CustomPagination";
 import CreateChildForm from "./create/ChildrenAffiliateForm";
+import { ActionType, Column } from "../../../../lib/types/tablet/table";
+import { CustomTable } from "../../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../../components/atoms/CustomPagination";
+import CustomButton from "../../../../components/atoms/CustomButton";
 
 interface Children {
   id: number;
@@ -101,12 +99,14 @@ export default function AffiliateChildrenPage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Niños del Afiliado"
-        buttonText="Nuevo Niño"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="Niños del Afiliado">
+        <CustomButton
+          buttonText="Agregar Niños"
+          icon={UserPlus}
+          className="bg-green-500 hover:bg-green-600 text-white w-full sm:w-auto"
+          onClick={createModal.onChangeState}
+        />
+      </PageHeader>
 
       <CustomTable
         data={paginatedAffiliates}

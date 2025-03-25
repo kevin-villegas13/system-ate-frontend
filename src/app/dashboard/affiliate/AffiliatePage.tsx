@@ -1,20 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { UserPlus } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import PageHeader from "../../../components/organisms/PageHeader";
 import FilterSelect from "../../../components/molecules/FilterSelect";
-import SearchInput from "../../../components/shared/SearchInput";
 import FiltersBar from "../../../components/molecules/FiltersBar";
 import PageContainer from "../../../components/organisms/PageContainer";
-import {
-  ActionType,
-  Column,
-  CustomTable,
-} from "../../../components/shared/CustomTable";
-import { CustomPagination } from "../../../components/shared/CustomPagination";
 import { useModal } from "../../../lib/hooks/use-modal";
 import CreateAffiliateForm from "./create/CreateAffiliateForm";
 import DetailAffiliate from "./detail/DetailAffiliate";
-import { useNavigate } from "react-router-dom";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import CustomButton from "../../../components/atoms/CustomButton";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+import { CustomPagination } from "../../../components/atoms/CustomPagination";
+import SearchInput from "../../../components/molecules/SearchInput";
 
 interface Affiliate {
   id: number;
@@ -88,12 +86,14 @@ export default function AffiliatePage() {
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Afiliados"
-        buttonText="Nuevo Afiliado"
-        buttonIcon={UserPlus}
-        onButtonClick={() => createModal.onChangeState()}
-      />
+      <PageHeader title="Afiliados">
+        <CustomButton
+          buttonText="Agregar Afiliados"
+          icon={UserPlus}
+          className="bg-green-500 hover:bg-green-600 text-white w-full sm:w-auto"
+          onClick={createModal.onChangeState}
+        />
+      </PageHeader>
 
       <FiltersBar>
         <SearchInput

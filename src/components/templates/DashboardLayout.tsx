@@ -1,20 +1,16 @@
 import { Fragment, useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { getBreadcrumbItems } from "../../lib/utils/getBreadcrumbItems";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
+import { AppSidebar } from "../organisms/sidebar/AppSidebar";
+import { Separator } from "../ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "../components/ui/breadcrumb";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "../components/ui/sidebar";
-import { AppSidebar } from "../components/sidebar/AppSidebar";
-import { Separator } from "../components/ui/separator";
-import { getBreadcrumbItems } from "../lib/utils/getBreadcrumbItems";
-import BreadcrumbLinkItem from "../components/shared/BreadcrumbLinkItem";
+} from "../ui/breadcrumb";
+import BreadcrumbLinkItem from "../atoms/BreadcrumbLinkItem";
 
 export default function DashboardLayout() {
   const { pathname } = useLocation();

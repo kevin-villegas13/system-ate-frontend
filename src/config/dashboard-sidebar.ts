@@ -64,7 +64,6 @@ export const data = {
         },
       ],
     },
-
     // 📌 DELEGADOS Y SECTORES
     {
       title: "Delegados",
@@ -76,12 +75,6 @@ export const data = {
           url: "/dashboard/delegados",
           icon: Users,
           roles: ["Administrador", "Empleado"],
-        },
-        {
-          title: "Beneficios",
-          url: "/dashboard/benefit/assign/delegate",
-          icon: ClipboardCheck,
-          roles: ["Administrador"],
         },
         {
           title: "Sectores",
@@ -99,7 +92,7 @@ export const data = {
       items: [
         {
           title: "Consultar",
-          url: "/dashboard/benefit",
+          url: "/dashboard/beneficios",
           icon: ListChecks,
           roles: ["Administrador", "Empleado"],
         },
@@ -111,13 +104,12 @@ export const data = {
         },
         {
           title: "Entregas",
-          url: "/dashboard/benefit/delivery",
+          url: "/dashboard/beneficios/distribucion",
           icon: ClipboardList,
           roles: ["Administrador", "Empleado"],
         },
       ],
     },
-
     {
       title: "Eventos",
       icon: History,
@@ -132,62 +124,11 @@ export const data = {
       ],
     },
 
-    // // **Reportes Básicos**
-    // {
-    //   title: "Reportes Básicos",
-    //   icon: FileText,
-    //   url: "#",
-    //   items: [
-    //     {
-    //       title: "Afiliados y Beneficios",
-    //       url: "/dashboard/report/affiliates-benefits",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Entregas Realizadas",
-    //       url: "/dashboard/report/deliveries",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Beneficios Disponibles",
-    //       url: "/dashboard/report/benefits-available",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Beneficios Agotados",
-    //       url: "/dashboard/report/benefits-exhausted",
-    //       roles: ["Administrador"],
-    //     },
-    //   ],
-    // },
-
-    // // **Informes Detallados**
-    // {
-    //   title: "Informes Detallados",
-    //   icon: FileText,
-    //   url: "#",
-    //   items: [
-    //     {
-    //       title: "Afiliados y Beneficios Asignados",
-    //       url: "/dashboard/report/detailed/affiliates-benefits",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Inventario de Beneficios",
-    //       url: "/dashboard/report/detailed/benefit-inventory",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Delegados y Actividad",
-    //       url: "/dashboard/report/detailed/delegates-status",
-    //       roles: ["Administrador"],
-    //     },
-    //     {
-    //       title: "Registro de Eventos",
-    //       url: "/dashboard/report/detailed/events-record",
-    //       roles: ["Administrador"],
-    //     },
-    //   ],
-    // },
+    // **Reportes Básicos**
+    {
+      title: "Reportes ",
+      icon: FileText,
+      url: "/dashboard/reportes",
+    },
   ],
 };

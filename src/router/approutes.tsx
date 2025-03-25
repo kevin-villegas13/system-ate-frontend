@@ -9,6 +9,9 @@ import EventPage from "../app/dashboard/events/EventPage";
 import SectorPage from "../app/dashboard/sectors/SectorsPage";
 import DelegatesPage from "../app/dashboard/delegates/DelegatesPage";
 import ManageBenefitsPage from "../app/dashboard/delegates/manageBenefits/ManageBenefitsPage";
+import BenefitsPages from "../app/dashboard/benefits/BenefitsPages";
+import DistributionPage from "../app/dashboard/distribution/DistributionPage";
+import ReportsPage from "../app/dashboard/reports/ReportsPage";
 
 export default function AppRoutes() {
   return (
@@ -28,6 +31,9 @@ export default function AppRoutes() {
           path="delegados/gestionar-beneficio"
           element={<ManageBenefitsPage />}
         />
+        <Route path="beneficios" element={<BenefitsPages />} />
+        <Route path="beneficios/distribucion" element={<DistributionPage />} />
+        <Route path="reportes" element={<ReportsPage />} />
       </Route>
     </Routes>
   );

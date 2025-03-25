@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import DelegateDialog from "../../../../components/dialogs/DelegateDialog";
+import { UserCheck } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "../../../../components/ui/select";
 import { Checkbox } from "../../../../components/ui/checkbox";
-import { UserCheck } from "lucide-react";
+import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 
 interface CrearAfiliadoProps {
   isOpen: boolean;

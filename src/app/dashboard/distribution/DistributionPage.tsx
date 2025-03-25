@@ -1,20 +1,17 @@
-import { ChangeEvent, useState } from "react";
 import { UserPlus } from "lucide-react";
-import PageHeader from "../../../components/organisms/PageHeader";
-import FilterSelect from "../../../components/molecules/FilterSelect";
-import FiltersBar from "../../../components/molecules/FiltersBar";
-import PageContainer from "../../../components/organisms/PageContainer";
-import { useModal } from "../../../lib/hooks/use-modal";
-import CreateUserForm from "./create/CreateUserForm";
-import EditUserForm from "./update/EditUserForm";
-import { ActionType, Column } from "../../../lib/types/tablet/table";
-import { showErrorToast, showSuccessToast } from "../../../lib/utils/toast";
 import CustomButton from "../../../components/atoms/CustomButton";
+import PageContainer from "../../../components/organisms/PageContainer";
+import PageHeader from "../../../components/organisms/PageHeader";
+import { useModal } from "../../../lib/hooks/use-modal";
+import FiltersBar from "../../../components/molecules/FiltersBar";
 import SearchInput from "../../../components/molecules/SearchInput";
+import { ChangeEvent } from "react";
+import FilterSelect from "../../../components/molecules/FilterSelect";
 import { CustomTable } from "../../../components/molecules/CustomTable";
 import { CustomPagination } from "../../../components/atoms/CustomPagination";
-import ConfirmDialog from "../../../components/organisms/dialogs/ConfirmDialog";
 import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { ActionType, Column } from "../../../lib/types/tablet/table";
+import CreateDistributionForm from "./create/CreateDistributionForm";
 
 interface User {
   id: number;
@@ -23,14 +20,8 @@ interface User {
   active: string;
 }
 
-export default function UserPage() {
+export default function DistributionPage() {
   const createModal = useModal();
-  const editModal = useModal();
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<null | (() => void)>(null);
-  const [confirmMessage, setConfirmMessage] = useState("");
-
   const affiliates: User[] = [
     { id: 1, name: "Kevin", role: "Masculino", active: "Tecnología" },
     { id: 2, name: "Ana", role: "Femenino", active: "Salud" },
@@ -56,36 +47,13 @@ export default function UserPage() {
     5
   );
 
-  const handleAction = (action: ActionType, item: User) => {
-    if (action === "edit") {
-      setSelectedUser(item);
-      editModal.onChangeState();
-    } else if (action === "delete") {
-      setConfirmMessage(`¿Estás seguro de eliminar a ${item.name}?`);
-      setConfirmAction(() => () => {
-        showSuccessToast(`Usuario ${item.name} desactivado`);
-      });
-      setIsConfirmOpen(true);
-    } else if (action === "desactive") {
-      setConfirmMessage(`¿Quieres desactivar a ${item.name}?`);
-      setConfirmAction(() => () => {
-        showErrorToast("Ocurrió un error al desactivar el usuario");
-      });
-      setIsConfirmOpen(true);
-    }
-  };
-
-  const handleConfirm = () => {
-    if (confirmAction) confirmAction();
-
-    setIsConfirmOpen(false);
-  };
+  const handleAction = (action: ActionType) => {};
 
   return (
     <PageContainer>
-      <PageHeader title="Usuarios">
+      <PageHeader title="ENTREGAS DE BENEFICIOS">
         <CustomButton
-          buttonText="Agregar Usuario"
+          buttonText="Entregar beneficio"
           icon={UserPlus}
           onClick={createModal.onChangeState}
         />
@@ -100,7 +68,7 @@ export default function UserPage() {
         />
 
         <FilterSelect
-          placeholder="Seleccionar estados"
+          placeholder="Seleccionar afialdos o niños"
           value={""}
           onChange={() => console.log("Crear nuevo afiliado")}
           options={[
@@ -110,7 +78,7 @@ export default function UserPage() {
         />
 
         <FilterSelect
-          placeholder="Seleccionar Roles"
+          placeholder="Seleccionar estados"
           value={""}
           onChange={() => console.log("Crear nuevo afiliado")}
           options={[
@@ -124,7 +92,7 @@ export default function UserPage() {
       <CustomTable
         data={paginatedData}
         columns={columns}
-        actions={["edit", "delete", "desactive"]}
+        actions={["edit", "delete", "view"]}
         onAction={handleAction}
       />
 
@@ -133,24 +101,9 @@ export default function UserPage() {
         totalPages={totalPages}
         onPageChange={goToPage}
       />
-
-      <CreateUserForm
+      <CreateDistributionForm
         isOpen={createModal.modalStatus}
         onClose={createModal.onChangeState}
-      />
-
-      <EditUserForm
-        isOpen={editModal.modalStatus}
-        onClose={editModal.onChangeState}
-        data={selectedUser}
-      />
-
-      <ConfirmDialog
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirm}
-        title="Confirmación Requerida"
-        description={confirmMessage}
       />
     </PageContainer>
   );
