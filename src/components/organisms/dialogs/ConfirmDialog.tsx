@@ -1,3 +1,4 @@
+import { ConfirmDialogProps } from "../../../lib/types/modal/dialogs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +10,6 @@ import {
   AlertDialogTitle,
 } from "../../ui/alert-dialog";
 import { AlertTriangle } from "lucide-react";
-import { ConfirmDialogProps } from "./types/dialogs";
 
 export default function ConfirmDialog({
   isOpen,

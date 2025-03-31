@@ -1,6 +1,5 @@
 import {
   Baby,
-  ClipboardCheck,
   ClipboardList,
   FileText,
   GalleryVerticalEnd,
@@ -48,7 +47,7 @@ export const data = {
           title: "Lista",
           url: "/dashboard/usuarios",
           icon: User,
-          roles: ["Administrador", "Empleado"],
+          roles: ["Administrador"],
         },
         {
           title: "Afiliados",

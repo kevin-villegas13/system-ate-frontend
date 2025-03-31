@@ -7,8 +7,8 @@ import {
   DialogFooter,
 } from "../../ui/dialog";
 import { Button } from "../../ui/button";
-import { DelegateDialogProps } from "./types/dialogs";
 import clsx from "clsx";
+import { DelegateDialogProps } from "../../../lib/types/modal/dialogs";
 
 export default function DelegateDialog({
   isOpen,

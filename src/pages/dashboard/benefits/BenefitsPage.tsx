@@ -9,7 +9,7 @@ import { ChangeEvent } from "react";
 import FilterSelect from "../../../components/molecules/FilterSelect";
 import { CustomTable } from "../../../components/molecules/CustomTable";
 import { CustomPagination } from "../../../components/atoms/CustomPagination";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 import { ActionType, Column } from "../../../lib/types/tablet/table";
 import CreateBenefitForm from "./create/CreateBenefitForm";
 import CreateBenefitTypeForm from "./createBenefitType/CreateBenefitTypeForm";
@@ -21,7 +21,7 @@ interface User {
   active: string;
 }
 
-export default function BenefitsPages() {
+export default function BenefitsPage() {
   const createBenefitModal = useModal();
   const createBenefitTypeModal = useModal();
 

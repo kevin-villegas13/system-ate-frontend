@@ -3,7 +3,7 @@ import { UserPlus } from "lucide-react";
 import PageContainer from "../../../components/organisms/PageContainer";
 import PageHeader from "../../../components/organisms/PageHeader";
 import FiltersBar from "../../../components/molecules/FiltersBar";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 import { useModal } from "../../../lib/hooks/use-modal";
 import CreateEventForm from "./create/CreateSectorForm";
 import CustomButton from "../../../components/atoms/CustomButton";

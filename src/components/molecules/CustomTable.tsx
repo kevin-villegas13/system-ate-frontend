@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { useState, useMemo, useCallback } from "react";
-import { useActionIcons } from "../../lib/hooks/use-ActionIcons";
+import { useActionIcons } from "../../lib/hooks/use-action-icons";
 import { CustomTableProps } from "../../lib/types/tablet/table";
 
 export function CustomTable<T extends { id: number }>({

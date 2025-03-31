@@ -5,7 +5,7 @@ import FiltersBar from "../../../components/molecules/FiltersBar";
 import SearchInput from "../../../components/molecules/SearchInput";
 import PageContainer from "../../../components/organisms/PageContainer";
 import PageHeader from "../../../components/organisms/PageHeader";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 import { Column } from "../../../lib/types/tablet/table";
 import { Button } from "../../../components/ui/button";
 import {

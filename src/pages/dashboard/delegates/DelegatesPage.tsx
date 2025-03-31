@@ -9,7 +9,7 @@ import FilterSelect from "../../../components/molecules/FilterSelect";
 import CreateDelegatesForm from "./create/CreateDelegatesForm";
 import { ActionType, Column } from "../../../lib/types/tablet/table";
 import AssignDelegates from "./assign/AssignDelegates";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 import CustomButton from "../../../components/atoms/CustomButton";
 import SearchInput from "../../../components/molecules/SearchInput";
 import { CustomTable } from "../../../components/molecules/CustomTable";

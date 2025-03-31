@@ -4,7 +4,7 @@ import FiltersBar from "../../../../components/molecules/FiltersBar";
 import PageContainer from "../../../../components/organisms/PageContainer";
 import PageHeader from "../../../../components/organisms/PageHeader";
 import FilterSelect from "../../../../components/molecules/FilterSelect";
-import { usePagination } from "../../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../../lib/hooks/use-pagination";
 import { ActionType, Column } from "../../../../lib/types/tablet/table";
 import { useModal } from "../../../../lib/hooks/use-modal";
 import HistoryDelegatesPage from "./history/HistoryDelegatesPage";

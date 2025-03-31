@@ -9,7 +9,7 @@ import { ChangeEvent } from "react";
 import FilterSelect from "../../../components/molecules/FilterSelect";
 import { CustomTable } from "../../../components/molecules/CustomTable";
 import { CustomPagination } from "../../../components/atoms/CustomPagination";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 import { ActionType, Column } from "../../../lib/types/tablet/table";
 import CreateDistributionForm from "./create/CreateDistributionForm";
 

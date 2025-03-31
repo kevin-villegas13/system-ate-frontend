@@ -14,7 +14,7 @@ import SearchInput from "../../../components/molecules/SearchInput";
 import { CustomTable } from "../../../components/molecules/CustomTable";
 import { CustomPagination } from "../../../components/atoms/CustomPagination";
 import ConfirmDialog from "../../../components/organisms/dialogs/ConfirmDialog";
-import { usePagination } from "../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../lib/hooks/use-pagination";
 
 interface User {
   id: number;

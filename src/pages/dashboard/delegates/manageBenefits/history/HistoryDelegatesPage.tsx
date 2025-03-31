@@ -1,5 +1,5 @@
 import { ModalProps } from "../../../../../lib/types/modal/modal.types";
-import { usePagination } from "../../../../../lib/hooks/use-Pagination";
+import { usePagination } from "../../../../../lib/hooks/use-pagination";
 import { Column } from "../../../../../lib/types/tablet/table";
 import DelegateDialog from "../../../../../components/organisms/dialogs/DelegateDialog";
 import { CustomTable } from "../../../../../components/molecules/CustomTable";

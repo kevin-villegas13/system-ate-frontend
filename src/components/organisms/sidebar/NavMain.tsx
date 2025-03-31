@@ -15,7 +15,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "../../ui/sidebar";
-import { NavMainProps, SidebarMenuLinkProps } from "./types/nav-main.type";
+import {
+  NavMainProps,
+  SidebarMenuLinkProps,
+} from "../../../lib/types/sidebar/nav-main.type";
 
 export function NavMain({ items }: NavMainProps) {
   const SidebarMenuLink = ({
@@ -24,12 +27,10 @@ export function NavMain({ items }: NavMainProps) {
     url,
   }: SidebarMenuLinkProps) => {
     return (
-      <>
-        <SidebarMenuButton tooltip={title}>
-          {Icon && <Icon />}
-          {url && <a href={url}>{title}</a>}
-        </SidebarMenuButton>
-      </>
+      <SidebarMenuButton tooltip={title}>
+        {Icon && <Icon />}
+        {url && <a href={url}>{title}</a>}
+      </SidebarMenuButton>
     );
   };
 
