@@ -18,7 +18,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useActionIcons } from "../../lib/hooks/use-action-icons";
 import { CustomTableProps } from "../../lib/types/tablet/table";
 
-export function CustomTable<T extends { id: number }>({
+export function CustomTable<T extends { id: string | number }>({
   data,
   columns,
   actions = ["view", "edit", "delete", "desactive"],
@@ -43,18 +43,21 @@ export function CustomTable<T extends { id: number }>({
 
   // Ordenar los datos según la columna seleccionada con useMemo para mejorar rendimiento
   const sortedData = useMemo(() => {
+    if (!sortColumn) return data;
+
     return [...data].sort((a, b) => {
-      if (!sortColumn) return 0;
-      const valueA = a[sortColumn];
-      const valueB = b[sortColumn];
+      const valueA = a[sortColumn] ?? "";
+      const valueB = b[sortColumn] ?? "";
 
-      if (typeof valueA === "number" && typeof valueB === "number")
+      if (typeof valueA === "number" && typeof valueB === "number") {
         return sortOrder === "asc" ? valueA - valueB : valueB - valueA;
+      }
 
-      if (typeof valueA === "string" && typeof valueB === "string")
+      if (typeof valueA === "string" && typeof valueB === "string") {
         return sortOrder === "asc"
           ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
+      }
 
       return 0;
     });
@@ -108,7 +111,7 @@ export function CustomTable<T extends { id: number }>({
                   key={String(key)}
                   className="p-4 text-gray-800 text-center border-b"
                 >
-                  {render ? render(item) : String(item[key])}
+                  {render ? render(item) : String(item[key] ?? "")}
                 </TableCell>
               ))}
 

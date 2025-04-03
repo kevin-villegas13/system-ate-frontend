@@ -1,59 +1,27 @@
-import { GalleryVerticalEnd } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ErrorMessage, Field } from "formik";
+import { Eye, EyeOff, GalleryVerticalEnd } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-import * as Yup from "yup";
 import ReusableFormikForm from "../../components/molecules/ReusableFormikForm";
-import { regexPatterns } from "../../lib/validators/regexPatterns";
 import { useLogin } from "../../services/auth/authService";
 import { showErrorToast, showSuccessToast } from "../../lib/utils/toast";
-import { ErrorMessage, Field } from "formik";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
+import { loginValidationSchema } from "../../lib/validators/auth/loginSchema";
 
 export default function LoginPage() {
   const loginMutation = useLogin();
   const navigate = useNavigate();
   const { setIsAuthenticated } = useAuthContext();
+  const [showPassword, setShowPassword] = useState(false);
 
   const initialValues = {
     username: "",
     password: "",
   };
-
-  const loginValidationSchema = Yup.object({
-    username: Yup.string()
-      .matches(regexPatterns.username, "El nombre de usuario no es válido.")
-      .required("El nombre de usuario es obligatorio."),
-
-    password: Yup.string()
-      .matches(
-        regexPatterns.passwordMinLength,
-        "Debe tener al menos 8 caracteres."
-      )
-      .matches(
-        regexPatterns.passwordLowercase,
-        "Debe contener al menos una letra minúscula."
-      )
-      .matches(
-        regexPatterns.passwordUppercase,
-        "Debe contener al menos una letra mayúscula."
-      )
-      .matches(
-        regexPatterns.passwordNumber,
-        "Debe contener al menos un número."
-      )
-      .matches(
-        regexPatterns.passwordSymbol,
-        "Debe incluir al menos un símbolo (ej. @, #, $, !, %)."
-      )
-      .matches(
-        regexPatterns.noWhitespace,
-        "No puede contener espacios en blanco."
-      )
-      .required("La contraseña es obligatoria."),
-  });
 
   const handleSubmit = async (values: {
     username: string;
@@ -64,7 +32,6 @@ export default function LoginPage() {
       showSuccessToast("Inicio de sesión exitoso 🎉");
       navigate("/dashboard");
       setIsAuthenticated(true);
-
       window.location.reload();
     } catch (error) {
       showErrorToast((error as Error).message);
@@ -120,9 +87,21 @@ export default function LoginPage() {
                   <Field
                     as={Input}
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Contraseña..."
+                    className="w-full pr-10"
                   />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
                   <ErrorMessage
                     name="password"
                     component="div"

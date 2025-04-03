@@ -14,11 +14,3 @@ export default function PageHeader({
     </div>
   );
 }
-
-// <Button
-//   onClick={onButtonClick}
-//   className="flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg"
-// >
-//   {Icon && <Icon className="w-6 h-6" />}
-//   {buttonText}
-// </Button>

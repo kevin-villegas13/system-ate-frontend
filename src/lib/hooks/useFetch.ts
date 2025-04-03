@@ -1,47 +1,57 @@
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { api } from "../api";
 
-const useMutationWithCache = <TRequest, TResponse>(
+type RequestBody = Record<string, unknown> | string;
+
+const useMutationWithCache = <TRequest extends RequestBody, TResponse>(
   method: "post" | "put" | "patch" | "delete",
   endpoint: string
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation<TResponse, unknown, TRequest>({
-    mutationFn: async (body: any): Promise<TResponse> => {
+  return useMutation<TResponse, Error, TRequest>({
+    mutationFn: async (body) => {
+      if (!body || (typeof body === "object" && Object.keys(body).length === 0))
+        throw new Error("El cuerpo de la solicitud está vacío");
+
+      const isDelete = method === "delete";
       const url =
-        method === "delete"
+        typeof body === "string" && isDelete
           ? `${endpoint}/${body}`
-          : `${endpoint}/${body.id || ""}`;
-      const response = await api[method]<TResponse>(url, body);
+          : typeof body === "object" && "id" in body
+          ? `${endpoint}/${body.id}`
+          : endpoint;
+
+      const response = await api[method]<TResponse>(url, body, {
+        withCredentials: true,
+      });
+
+      queryClient.invalidateQueries({ queryKey: [endpoint] });
       return response.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [endpoint] });
-    },
   });
 };
 
-// Hooks específicos reutilizando el genérico
-export const useFetch = <T>(endpoint: string) => {
-  return useQuery<T>({
+export const useFetch = <T>(endpoint: string) =>
+  useQuery<T, Error>({
     queryKey: [endpoint],
-    queryFn: async (): Promise<T> => {
-      const { data } = await api.get<T>(endpoint, { withCredentials: true });
-      return data;
-    },
+    queryFn: async () =>
+      (await api.get<T>(endpoint, { withCredentials: true })).data,
     enabled: Boolean(endpoint),
+    staleTime: 5000,
   });
-};
 
-export const usePost = <TRequest, TResponse>(endpoint: string) =>
-  useMutationWithCache<TRequest, TResponse>("post", endpoint);
+export const usePost = <TRequest extends Record<string, unknown>, TResponse>(
+  endpoint: string
+) => useMutationWithCache<TRequest, TResponse>("post", endpoint);
 
-export const usePut = <TRequest, TResponse>(endpoint: string) =>
-  useMutationWithCache<TRequest, TResponse>("put", endpoint);
+export const usePut = <TRequest extends Record<string, unknown>, TResponse>(
+  endpoint: string
+) => useMutationWithCache<TRequest, TResponse>("put", endpoint);
 
-export const usePatch = <TRequest, TResponse>(endpoint: string) =>
-  useMutationWithCache<TRequest, TResponse>("patch", endpoint);
+export const usePatch = <TRequest extends Record<string, unknown>, TResponse>(
+  endpoint: string
+) => useMutationWithCache<TRequest, TResponse>("patch", endpoint);
 
 export const useDelete = (endpoint: string) =>
   useMutationWithCache<string, void>("delete", endpoint);
