@@ -1,70 +1,69 @@
+// React y librerías externas
 import { useState } from "react";
-import { Award, Eye, EyeOff } from "lucide-react";
-import { ErrorMessage, Field, FieldProps } from "formik";
+import { Award } from "lucide-react";
+
+// Componentes UI reutilizables
 import { Button } from "../../../../components/ui/button";
-import { Input } from "../../../../components/ui/input";
-import { Label } from "../../../../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../components/ui/select";
+
+// Diálogos modales personalizados
 import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 import ConfirmDialog from "../../../../components/organisms/dialogs/ConfirmDialog";
+
+// Formularios reutilizables
 import ReusableFormikForm from "../../../../components/molecules/ReusableFormikForm";
-import { useCreateUser } from "../../../../services/users/userService";
-import { showErrorToast, showSuccessToast } from "../../../../lib/utils/toast";
+import UserFormFields from "../../../../components/molecules/forms/user/UserFormFields";
+
+// Tipos y validación
 import { ModalProps } from "../../../../lib/types/modal/modal.types";
-import { useFetchRoles } from "../../../../services/role/role.services";
 import { userValidationSchema } from "../../../../lib/validators/user/registerSchema";
+
+// Servicios de API
+import { useFetchRoles } from "../../../../services/role/role.services";
+import { useCreateUser } from "../../../../services/users/userService";
+
+// Utilidades comunes
+import { showErrorToast, showSuccessToast } from "../../../../lib/utils/toast";
+import { UserFormValues } from "../../../../lib/types/forms/user/userForm.types";
 
 export default function CreateUserForm({ isOpen, onClose }: ModalProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [formValues, setFormValues] = useState({
-    username: "",
-    roleName: "",
-    password: "",
-  });
+  const [formValues, setFormValues] = useState<UserFormValues | null>(null);
 
   const { data: roles } = useFetchRoles();
   const createUser = useCreateUser();
 
-  // Función para abrir la confirmación
-  const handleOpenConfirm = (values: {
-    username: string;
-    roleName: string;
-    password: string;
-  }) => {
+  // Abre el diálogo de confirmación tras validar los campos
+  const handleOpenConfirm = (values: UserFormValues) => {
     if (!values.roleName) {
       showErrorToast("Debe seleccionar un rol.");
       return;
     }
+
     setFormValues(values);
     setIsConfirmOpen(true);
   };
 
-  // Función para manejar la confirmación y crear el usuario
-  const handleConfirm = async (values: {
-    username: string;
-    roleName: string;
-    password: string;
-  }) => {
+  // Ejecuta la creación del usuario al confirmar
+  const handleConfirm = async () => {
+    if (!formValues) {
+      showErrorToast("Los datos del formulario son inválidos.");
+      return;
+    }
+
     try {
-      await createUser.mutateAsync(values);
-      showSuccessToast(`Usuario ${values.username} creado con éxito.`);
+      await createUser.mutateAsync(formValues);
+      showSuccessToast(`Usuario ${formValues.username} creado con éxito.`);
       setIsConfirmOpen(false);
       onClose();
     } catch (error) {
       showErrorToast((error as Error).message);
-      console.log("❌ Error:", (error as Error).message);
     }
   };
 
   return (
     <>
+      {/* Diálogo para crear el usuario */}
       <DelegateDialog
         className=""
         isOpen={isOpen}
@@ -78,101 +77,31 @@ export default function CreateUserForm({ isOpen, onClose }: ModalProps) {
           </Button>
         }
       >
+        {/* Formulario reutilizable con validación */}
         <ReusableFormikForm
-          initialValues={{ username: "", roleName: "", password: "" }}
+          initialValues={{
+            username: "",
+            roleName: "",
+            password: "",
+          }}
           validationSchema={userValidationSchema}
-          onSubmit={(values) => handleOpenConfirm(values)}
+          onSubmit={handleOpenConfirm}
           formId="crearUsuarioForm"
           className="grid gap-6"
         >
-          {/* Campo de Nombre de Usuario */}
-          <div className="grid gap-2">
-            <Label htmlFor="username">Nombre de usuario</Label>
-            <Field
-              as={Input}
-              id="username"
-              name="username"
-              placeholder="Ingrese el nombre de usuario"
-              className="w-full"
-            />
-            <ErrorMessage
-              name="username"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
-
-          {/* Campo de Contraseña */}
-          <div className="grid gap-2 relative">
-            <Label htmlFor="password">Contraseña</Label>
-            <div className="relative w-full">
-              <Field
-                as={Input}
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Ingrese la contraseña"
-                className="w-full pr-10"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
-
-          {/* Selección de rol */}
-          <div className="grid gap-2">
-            <Label htmlFor="roleName">Rol</Label>
-            <Field name="roleName">
-              {({ field, form }: FieldProps) => (
-                <Select
-                  value={field.value}
-                  onValueChange={(value) =>
-                    form.setFieldValue("roleName", value)
-                  }
-                >
-                  <SelectTrigger className="w-full md:w-[550px]">
-                    <SelectValue>
-                      {field.value || "Seleccionar rol"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {roles?.map((role) => (
-                      <SelectItem key={role.id} value={role.roleName!}>
-                        {role.roleName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </Field>
-
-            <ErrorMessage
-              name="roleName"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+          <UserFormFields
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            roles={roles ?? []}
+          />
         </ReusableFormikForm>
       </DelegateDialog>
 
+      {/* Diálogo de confirmación antes de crear */}
       <ConfirmDialog
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
-        onConfirm={() => handleConfirm(formValues)}
+        onConfirm={handleConfirm}
         title="Confirmar Creación"
         description="¿Está seguro de que desea crear el usuario con el rol seleccionado?"
       />

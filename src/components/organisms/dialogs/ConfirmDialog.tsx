@@ -26,7 +26,7 @@ export default function ConfirmDialog({
       <AlertDialogContent className="max-w-sm text-center">
         <AlertDialogHeader>
           <div className="flex flex-col items-center">
-            <Icon className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-3" />
+            <Icon className="w-12 h-12 text-yellow-500 mb-3" />
             <AlertDialogTitle className="text-lg font-semibold">
               {title}
             </AlertDialogTitle>
@@ -36,14 +36,19 @@ export default function ConfirmDialog({
           </div>
         </AlertDialogHeader>
 
-        <AlertDialogFooter className="flex justify-center gap-4">
-          <AlertDialogCancel onClick={onClose}>No, cancelar</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            className={`${confirmColor} text-white`}
-          >
-            {confirmLabel}
-          </AlertDialogAction>
+        {/* Botones centrados correctamente */}
+        <AlertDialogFooter>
+          <div className="w-full flex justify-center gap-4 items-center">
+            <AlertDialogCancel onClick={onClose}>
+              No, cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={onConfirm}
+              className={`${confirmColor} text-white`}
+            >
+              {confirmLabel}
+            </AlertDialogAction>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

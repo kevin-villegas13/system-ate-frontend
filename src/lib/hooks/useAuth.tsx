@@ -11,7 +11,7 @@ interface TokenResponse {
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Estado para controlar la carga
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const checkingAuth = useRef(false);
 
   const { refetch: refreshToken } = useRefreshToken();
@@ -20,7 +20,7 @@ export function useAuth() {
   const checkAuth = useCallback(async () => {
     if (checkingAuth.current) return;
     checkingAuth.current = true;
-    setIsLoading(true); // Inicia el loading mientras verificamos la autenticación
+    setIsLoading(true);
 
     try {
       const { data } = await verifyTokens();
@@ -48,7 +48,6 @@ export function useAuth() {
     console.log(isAuthenticated);
     return () => clearInterval(interval);
   }, [checkAuth, isAuthenticated]);
-
 
   return { isAuthenticated, isLoading }; // Retor na el estado de carga y autenticación
 }

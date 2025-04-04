@@ -28,20 +28,15 @@ export const usePaginationUser = (params?: {
     ...(params?.status && { status: params.status }),
   }).toString();
 
-  const result = useFetch<UserResponse>(`/user?${queryParams}`);
+  const { data, refetch } = useFetch<UserResponse>(`/user?${queryParams}`);
 
   return {
-    users: result?.data?.data ?? [],
-    totalPages: result?.data?.totalPages ?? 1,
+    users: data?.data ?? [],
+    totalPages: data?.totalPages ?? 1,
+    refetch,
   };
 };
-
-export const useFetchUserById = (id: string) => {
-  return useFetch(`/user/${id}`);
-};
-
-export const useUpdateUser = () =>
-  usePatch<{ id: string; data: User }, User>("/user");
+export const useUpdateUser = (id: string) => usePatch(`/user/${id}`);
 
 export const useToggleUserStatus = () =>
   usePatch<{ id: string }, User>("/user");

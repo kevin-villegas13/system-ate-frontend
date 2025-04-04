@@ -1,34 +1,44 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CheckCircle, UserPlus, XCircle } from "lucide-react";
 
-// Componentes
-import PageHeader from "../../../components/organisms/PageHeader";
-import PageContainer from "../../../components/organisms/PageContainer";
-import FiltersBar from "../../../components/molecules/FiltersBar";
-import FilterSelect from "../../../components/molecules/FilterSelect";
-import SearchInput from "../../../components/molecules/SearchInput";
+// Componentes UI reutilizables
+import { Badge } from "../../../components/ui/badge";
 import CustomButton from "../../../components/atoms/CustomButton";
-import { CustomTable } from "../../../components/molecules/CustomTable";
 import { CustomPagination } from "../../../components/atoms/CustomPagination";
+import FilterSelect from "../../../components/molecules/FilterSelect";
+import FiltersBar from "../../../components/molecules/FiltersBar";
+import SearchInput from "../../../components/molecules/SearchInput";
+import { CustomTable } from "../../../components/molecules/CustomTable";
+
+// Layouts y contenedores
+import PageContainer from "../../../components/organisms/PageContainer";
+import PageHeader from "../../../components/organisms/PageHeader";
+
+// Diálogos modales
 import ConfirmDialog from "../../../components/organisms/dialogs/ConfirmDialog";
 
-// Formularios de usuario
+// Formularios (crear y editar usuario)
 import CreateUserForm from "./create/CreateUserForm";
 import EditUserForm from "./update/EditUserForm";
 
-// Hooks y utilidades
+// Hooks personalizados
 import { useModal } from "../../../lib/hooks/use-modal";
-import { showErrorToast, showSuccessToast } from "../../../lib/utils/toast";
+
+// Servicios (llamadas a API)
 import {
   useDeleteUser,
   usePaginationUser,
   useToggleUserStatus,
 } from "../../../services/users/userService";
+import { useFetchRoles } from "../../../services/role/role.services";
+
+// Utilidades generales
+import { showErrorToast, showSuccessToast } from "../../../lib/utils/toast";
+
+// Tipos y modelos
 import { ActionType, Column } from "../../../lib/types/tablet/table";
 import { User } from "../../../models/User";
-import { useFetchRoles } from "../../../services/role/role.services";
 import { Status } from "../../../models/enums/Status.enum";
-import { Badge } from "../../../components/ui/badge";
 
 export default function UserPage() {
   // Modales
@@ -57,13 +67,17 @@ export default function UserPage() {
   const toggleUserStatus = useToggleUserStatus();
 
   // Consulta de datos con filtros y paginación
-  const data = usePaginationUser({
+  const { users, totalPages, refetch } = usePaginationUser({
     page: currentPage,
     limit: 5,
     search: searchQuery,
     roleId: selectedRole !== "all" ? selectedRole : undefined,
     status: selectedStatus === Status.ALL ? undefined : selectedStatus,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, searchQuery, selectedRole, selectedStatus]);
 
   // Configuración de columnas de la tabla
   const columns: Column<User>[] = [
@@ -96,6 +110,7 @@ export default function UserPage() {
       ),
     },
   ];
+
   // Manejo de acciones en la tabla
   const handleAction = (action: ActionType, user: User) => {
     switch (action) {
@@ -108,11 +123,12 @@ export default function UserPage() {
         setConfirmAction(() => async () => {
           try {
             await deleteUser.mutateAsync(user.id as string);
+            refetch();
             showSuccessToast(
               `Usuario ${user.username} eliminado correctamente`
             );
           } catch (error) {
-            showErrorToast("Ocurrió un error al eliminar el usuario");
+            showErrorToast((error as Error).message);
           }
         });
         setIsConfirmOpen(true);
@@ -125,11 +141,12 @@ export default function UserPage() {
             await toggleUserStatus.mutateAsync({
               id: `${user.id}/toggle-status`,
             });
+            refetch();
             showSuccessToast(
               `Usuario ${user.username} ${newStatus} correctamente`
             );
           } catch (error) {
-            showErrorToast(`Ocurrió un error al ${newStatus} el usuario`);
+            showErrorToast((error as Error).message);
           }
         });
         setIsConfirmOpen(true);
@@ -140,6 +157,28 @@ export default function UserPage() {
   const handleConfirm = () => {
     if (confirmAction) confirmAction();
     setIsConfirmOpen(false);
+  };
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    if (newQuery !== searchQuery) {
+      setSearchQuery(newQuery);
+      setCurrentPage(1);
+    }
+  };
+
+  const handleStatusChange = (value: string) => {
+    if (value !== selectedStatus) {
+      setSelectedStatus(value);
+      setCurrentPage(1);
+    }
+  };
+
+  const handleRoleChange = (value: string) => {
+    if (value !== selectedRole) {
+      setSelectedRole(value);
+      setCurrentPage(1);
+    }
   };
 
   // Opciones para el selector de roles
@@ -158,7 +197,7 @@ export default function UserPage() {
     { value: Status.INACTIVE, label: "Inactivo" },
   ];
 
-  const usersFormatted = data.users.map((user) => ({
+  const usersFormatted = (users ?? []).map((user) => ({
     ...user,
     id: user.id ?? "",
   }));
@@ -176,29 +215,17 @@ export default function UserPage() {
 
       {/* Barra de filtros */}
       <FiltersBar>
-        <SearchInput
-          placeholder="Buscar..."
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setSearchQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+        <SearchInput placeholder="Buscar..." onChange={handleSearch} />
         <FilterSelect
           placeholder="Seleccionar estados"
           value={selectedStatus}
-          onChange={(value: string) => {
-            setSelectedStatus(value);
-            setCurrentPage(1);
-          }}
+          onChange={handleStatusChange}
           options={statusOptions}
         />
         <FilterSelect
           placeholder="Seleccionar Roles"
           value={selectedRole}
-          onChange={(value: string) => {
-            setSelectedRole(value);
-            setCurrentPage(1);
-          }}
+          onChange={handleRoleChange}
           options={roleOptions}
         />
       </FiltersBar>
@@ -214,20 +241,26 @@ export default function UserPage() {
       {/* Paginación */}
       <CustomPagination
         currentPage={currentPage}
-        totalPages={data.totalPages}
+        totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
 
       {/* Modal de creación de usuario */}
       <CreateUserForm
         isOpen={createModal.modalStatus}
-        onClose={createModal.onChangeState}
+        onClose={() => {
+          createModal.onChangeState();
+          refetch();
+        }}
       />
 
       {/* Modal de edición de usuario */}
       <EditUserForm
         isOpen={editModal.modalStatus}
-        onClose={editModal.onChangeState}
+        onClose={() => {
+          editModal.onChangeState();
+          refetch();
+        }}
         data={selectedUser}
       />
 

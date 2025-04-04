@@ -1,24 +1,32 @@
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
-import { Award, Eye, EyeOff } from "lucide-react";
+// React y librerías externas
+import { useState } from "react";
+import { Award } from "lucide-react";
+
+// Componentes UI reutilizables
 import { Button } from "../../../../components/ui/button";
-import { Input } from "../../../../components/ui/input";
-import { Label } from "../../../../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../components/ui/select";
-import { EditModalProps } from "../../../../lib/types/modal/modal.types";
+
+// Diálogos modales personalizados
 import DelegateDialog from "../../../../components/organisms/dialogs/DelegateDialog";
 import ConfirmDialog from "../../../../components/organisms/dialogs/ConfirmDialog";
-import { User } from "../../../../models/User";
+
+// Formularios reutilizables
 import ReusableFormikForm from "../../../../components/molecules/ReusableFormikForm";
-import { ErrorMessage, Field, FieldProps } from "formik";
+import UserFormFields from "../../../../components/molecules/forms/user/UserFormFields";
+
+// Tipos y modelos
+import { EditModalProps } from "../../../../lib/types/modal/modal.types";
+import { User } from "../../../../models/User";
+
+// Validación
 import { userValidationSchema } from "../../../../lib/validators/user/registerSchema";
+
+// Servicios de API
 import { useFetchRoles } from "../../../../services/role/role.services";
+import { useUpdateUser } from "../../../../services/users/userService";
+
+// Utilidades comunes
+import { showErrorToast, showSuccessToast } from "../../../../lib/utils/toast";
+import { UserFormValues } from "../../../../lib/types/forms/user/userForm.types";
 
 export default function EditUserForm({
   isOpen,
@@ -27,162 +35,102 @@ export default function EditUserForm({
 }: EditModalProps<User>) {
   const [showPassword, setShowPassword] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [formValues, setFormValues] = useState<UserFormValues | null>(null);
 
-  // Obtener roles desde el hook
+  const { mutate: updateUser } = useUpdateUser(data?.id ?? "");
   const { data: roles } = useFetchRoles();
 
-  // Manejo de estado para los datos del usuario
-  const [username, setUsername] = useState(data?.username ?? "");
-  const [password, setPassword] = useState(""); // No mostramos la contraseña anterior por seguridad
-  const [roleName, setRoleName] = useState(data?.role?.roleName ?? "");
+  // Valores iniciales del formulario
+  const initialValues: UserFormValues = {
+    username: data?.username ?? "",
+    roleName: data?.role?.roleName ?? "",
+    password: "",
+  };
 
-  useEffect(() => {
-    // Si los roles ya están cargados y se recibe `data`, actualizamos el rol
-    if (data?.role?.roleName) {
-      setRoleName(data?.role?.roleName);
-    }
-  }, [data, roles]);
-
-  const handleOpenConfirm = () => {
-    if (!username.trim()) {
-      toast.error("Debe ingresar un nombre de usuario.");
+  // Abre el diálogo de confirmación tras validar campos
+  const handleOpenConfirm = (values: UserFormValues) => {
+    if (!values.username.trim()) {
+      showErrorToast("Debe ingresar un nombre de usuario.");
       return;
     }
-    if (!roleName) {
-      toast.error("Debe seleccionar un rol.");
+
+    if (!values.roleName) {
+      showErrorToast("Debe seleccionar un rol.");
       return;
     }
+
+    setFormValues(values);
     setIsConfirmOpen(true);
   };
 
+  // Ejecuta la actualización del usuario al confirmar
   const handleConfirm = () => {
-    console.log("Usuario editado:", { username, password, roleName });
-    toast.success(`Usuario ${username} actualizado exitosamente.`);
-    setIsConfirmOpen(false);
-    onClose();
+    if (!data?.id || !formValues) {
+      showErrorToast("Datos inválidos para actualizar el usuario.");
+      return;
+    }
+
+    try {
+      updateUser(
+        { ...formValues },
+        {
+          onSuccess: () => {
+            showSuccessToast(
+              `Usuario ${formValues.username} actualizado exitosamente.`
+            );
+            setIsConfirmOpen(false);
+            onClose();
+          },
+          onError: (error) => {
+            showErrorToast((error as Error).message);
+            setIsConfirmOpen(false);
+          },
+        }
+      );
+    } catch (error) {
+      showErrorToast((error as Error).message);
+    }
   };
 
   return (
     <>
+      {/* Diálogo para editar el usuario */}
       <DelegateDialog
-        className=""
+        className="custom-class"
         isOpen={isOpen}
         onClose={onClose}
         title="Editar Usuario"
         description="Modifique el nombre de usuario, la contraseña y seleccione un rol."
         footerButtons={
-          <Button type="button" onClick={handleOpenConfirm}>
+          <Button type="submit" form="editarUsuarioForm">
             <Award className="mr-2 h-4 w-4" />
             Guardar Cambios
           </Button>
         }
       >
+        {/* Formulario reutilizable con validación */}
         <ReusableFormikForm
-          initialValues={{
-            username: data?.username ?? "",
-            roleName: roleName ?? "",
-            password: "",
-          }}
+          initialValues={initialValues}
           validationSchema={userValidationSchema}
-          onSubmit={(values) => {
-            setUsername(values.username);
-            setPassword(values.password);
-            setRoleName(values.roleName);
-            handleOpenConfirm();
-          }}
-          formId="crearUsuarioForm"
+          onSubmit={handleOpenConfirm}
+          formId="editarUsuarioForm"
           className="grid gap-6"
         >
-          {/* Campo de Nombre de Usuario */}
-          <div className="grid gap-2">
-            <Label htmlFor="username">Nombre de usuario</Label>
-            <Field
-              as={Input}
-              id="username"
-              name="username"
-              placeholder="Ingrese el nombre de usuario"
-              className="w-full"
-            />
-            <ErrorMessage
-              name="username"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
-
-          {/* Campo de Contraseña */}
-          <div className="grid gap-2 relative">
-            <Label htmlFor="password">Contraseña</Label>
-            <div className="relative w-full">
-              <Field
-                as={Input}
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Ingrese la contraseña"
-                className="w-full pr-10"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
-
-          {/* Selección de rol */}
-          <div className="grid gap-2">
-            <Label htmlFor="roleName">Rol</Label>
-            <Field name="roleName">
-              {({ field, form }: FieldProps) => (
-                <Select
-                  value={field.value}
-                  onValueChange={(value) =>
-                    form.setFieldValue("roleName", value)
-                  }
-                >
-                  <SelectTrigger className="w-full md:w-[550px]">
-                    <SelectValue>
-                      {field.value || "Seleccionar rol"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {roles?.map((role) => (
-                      <SelectItem key={role.id} value={role.roleName!}>
-                        {role.roleName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </Field>
-            <ErrorMessage
-              name="roleName"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+          <UserFormFields
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            roles={roles ?? []}
+          />
         </ReusableFormikForm>
       </DelegateDialog>
 
-      {/* Cuadro de Confirmación */}
+      {/* Diálogo de confirmación antes de actualizar */}
       <ConfirmDialog
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirm}
         title="Confirmar Edición"
-        description={`¿Está seguro de que desea actualizar el usuario ${username} con rol ${roleName}?`}
+        description={`¿Está seguro de que desea actualizar el usuario ${formValues?.username} con rol ${formValues?.roleName}?`}
       />
     </>
   );

@@ -11,23 +11,40 @@ const useMutationWithCache = <TRequest extends RequestBody, TResponse>(
 
   return useMutation<TResponse, Error, TRequest>({
     mutationFn: async (body) => {
-      if (!body || (typeof body === "object" && Object.keys(body).length === 0))
+      console.log("📤 Enviando payload:", body);
+
+      if (
+        method !== "delete" &&
+        (!body || (typeof body === "object" && Object.keys(body).length === 0))
+      ) {
+        console.warn("⛔ El cuerpo de la solicitud está vacío");
         throw new Error("El cuerpo de la solicitud está vacío");
+      }
 
       const isDelete = method === "delete";
       const url =
         typeof body === "string" && isDelete
           ? `${endpoint}/${body}`
           : typeof body === "object" && "id" in body
-          ? `${endpoint}/${body.id}`
+          ? `${endpoint}/${(body as { id: string }).id}`
           : endpoint;
 
-      const response = await api[method]<TResponse>(url, body, {
-        withCredentials: true,
-      });
+      console.log("🌍 URL generada:", url);
+      console.log("🔧 Método:", method.toUpperCase());
 
-      queryClient.invalidateQueries({ queryKey: [endpoint] });
-      return response.data;
+      try {
+        const response = await api[method]<TResponse>(url, body, {
+          withCredentials: true,
+        });
+
+        console.log("✅ Respuesta del servidor:", response);
+        queryClient.invalidateQueries({ queryKey: [endpoint] });
+
+        return response.data;
+      } catch (error: any) {
+        console.error("❌ Error en la solicitud:", error);
+        throw error;
+      }
     },
   });
 };

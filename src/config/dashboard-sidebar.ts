@@ -40,8 +40,6 @@ export const data = {
     {
       title: "Usuarios",
       icon: Users,
-      isActive: true,
-      url: "#",
       items: [
         {
           title: "Lista",
